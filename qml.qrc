@@ -1,0 +1,10 @@
+<RCC>
+    <qresource prefix="/">
+        <file>main.qml</file>
+        <file>MainMenu.qml</file>
+        <file>Game.qml</file>
+        <file>Option.qml</file>
+        <file>Btn.qml</file>
+        <file>Cell.qml</file>
+    </qresource>
+</RCC>
