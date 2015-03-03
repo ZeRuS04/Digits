@@ -9,7 +9,8 @@ Rectangle {
     Text{
         id: num
         anchors.centerIn: parent
-        font.pointSize: 14
+//        font.pointSize: 14
+        font.pixelSize: rect.height/2
         text: rect.modelData == 0 ? "" : parent.n
     }
 
@@ -67,7 +68,7 @@ Rectangle {
 
             PropertyChanges {
                 target: rect
-                color: "gray"
+                color: "#6b6d6d"
                 border.width: 0
                 radius: 0
             }
@@ -76,6 +77,8 @@ Rectangle {
                 text: ""
             }
         }
-
     ]
+
+
+
 }

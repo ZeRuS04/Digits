@@ -3,10 +3,7 @@ import QtQuick 2.0
 Rectangle {
     id: btn
     state: "Normal";
-    radius: 5;
-    border.width: 1;
-    border.color: "black";
-    color: Qt.rgba(1,1,1,0.7);
+    border.color: "#845a00";
     property string text: "";
 
     property color colorText: "black";
@@ -17,10 +14,11 @@ Rectangle {
         id: buttonText
         anchors.fill: parent;
         text: parent.text;
-        color: parent.colorText;
         horizontalAlignment: Text.AlignHCenter;
         verticalAlignment: Text.AlignVCenter;
         font.pixelSize: parent.fntSize;
+        font.family: "Arial"
+        font.bold: true
         wrapMode: Text.WordWrap;
     }
 
@@ -29,14 +27,26 @@ Rectangle {
             name: "Normal"
             PropertyChanges {
                 target: btn;
-                color: Qt.rgba(1,1,1,0.7);
+                color: "skyblue"
+                border.width: 1;
+                radius: 5;
+            }
+            PropertyChanges {
+                target: buttonText
+                color: parent.colorText;
             }
         },
         State{
                 name: "Pressed"
                 PropertyChanges {
                     target: btn;
-                    color: "skyblue"
+                    color: "#6b6d6d";
+                    border.width: 0;
+                    radius: 0;
+                }
+                PropertyChanges {
+                    target: buttonText
+                    color: parent.colorText_2;
                 }
         }
 

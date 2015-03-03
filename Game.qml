@@ -5,39 +5,12 @@ import QtQuick.Layouts 1.1
 Rectangle {
     id: mainRect
     anchors.fill: parent
-
+    color: "#fdf9f0";
     property int score_constant:10
     property var pair: [];
 
-    function integerDivision(x, y){
-        return (x-x%y)/y
-    }
 
-    function secToString(time) {
-        var seconds = time%60;
-        if(seconds < 10)
-            seconds = "0" + String(seconds)
-        else
-            seconds = String(seconds)
-        time = integerDivision(time,60);
-        var minutes = time%60;
-        if(minutes < 10)
-            minutes = "0" + String(minutes)
-        else
-            minutes = String(minutes)
-        time = integerDivision(time,60);
-        var hours = time%24;
-        var days = integerDivision(time,24);
-        var string = "";
-        if (days!=0) {
-                string = days +":"+ hours +":"+  minutes +":"+ seconds;
-        } else if (hours!=0) {
-                string = hours +":"+ minutes +":"+ seconds;
-        } else {
-                string = minutes +":"+ seconds;
-        }
-        return string;
-    }
+
 
     Timer{
         interval: 1000; running: true; repeat: true
@@ -65,12 +38,6 @@ Rectangle {
             Repeater{
                 id: rep
                 model: logic.numsCount
-                Connections{
-                    target: mainRect
-                    onUpdated: {
-                        rep.model = mainRect.nums;
-                    }
-                }
 
                 delegate: Cell{
                     id: rect
@@ -102,6 +69,7 @@ Rectangle {
                                         if(logic.checkPair(pair[0].i, rect.i)){
                                             logic.numToNull(pair[0].i);
                                             logic.numToNull(rect.i)
+                                            logic.saveNumsList();
                                             pair[0].state = "Delete"
                                             rect.state = "Delete";
                                             mainRect.pair.length = 0;
@@ -139,30 +107,88 @@ Rectangle {
         width: parent.width
         height: mainRect.height/10
         color: mainRect.color
+        gradient: Gradient {
+            GradientStop {
+                position: 0.00;
+                color: "#fdefd0";
+            }
+            GradientStop {
+                position: 0.57;
+                color: "#fdf9f0";
+            }
+        }
+
         RowLayout{
             anchors.fill: parent
-            Label{
-                id: scoreLabel
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
+            Button{
+                anchors.margins: 10
+                id: mainMenu
+                width: height
+                Layout.fillHeight: true
+                text: "Menu"
+                onClicked: mainLoader.source = "MainMenu.qml"
+            }
+            ColumnLayout{
+
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                text: "Score: " + logic.score
+                Label{
+                    id: scoreLabel
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    fontSizeMode: Text.Fit;
+                    font.bold: true
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    text: "Score: " + logic.score
+                }
+                Label{
+                    id: stepsLabel
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    fontSizeMode: Text.Fit;
+                    font.bold: true
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    text: "Steps: " + logic.steps
+                }
 
-    //            font.pixelSize:
             }
-            Label{
-                id: timeLabel
-                verticalAlignment: Text.AlignVCenter
-                horizontalAlignment: Text.AlignHCenter
+            ColumnLayout{
+
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                text: "Time: "+ mainRect.secToString(logic.time)
-
-//                font.pixelSize: score.height/2
+                Label{
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    fontSizeMode: Text.Fit;
+                    font.bold: true
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    text: "Time"
+                }
+                Label{
+                    id: timeLabel
+                    verticalAlignment: Text.AlignVCenter
+                    horizontalAlignment: Text.AlignHCenter
+                    fontSizeMode: Text.Fit;
+                    font.bold: true
+                    Layout.fillWidth: true
+                    Layout.fillHeight: true
+                    text: logic.secToString(logic.time)
+                }
             }
-
+            Button{
+                id: restartButton
+                anchors.margins: 10
+                width: height
+                Layout.fillHeight: true
+                text: "Restart"
+                onClicked: logic.restart()
+            }
         }
+
+
     }
 
     RowLayout{
@@ -189,29 +215,25 @@ Rectangle {
 
         }
         Button{
-            id: restartButton
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            text: "Restart"
-            onClicked: logic.restart()
-//                mainRect.nums = [1,1,1,2,1,3,1,4,1,5,1,6,1,7,1,8,1,9];
-//                settings.setValue("NumArray", mainRect.nums);
-//                rep.model = 0;
-//                rep.model = mainRect.nums;
-//                mainRect.score = 0;
-//                settings.setValue("Score", mainRect.score);
-//                mainRect.time = 0
-//                settings.setValue("Time", mainRect.time);
-//                mainRect.backupNums.length = 0;
-
-
-        }
-        Button{
             id: nextStepButton
             Layout.fillWidth: true
             Layout.fillHeight: true
             text: "Next step"
-            onClicked: logic.nextStep()
+            property bool isActive: true
+            onClicked:{
+                if(isActive){
+                    isActive = false;
+                    timer.start();
+                    logic.nextStep();
+                }
+            }
+            Timer{
+                id: timer
+                interval: 500
+                repeat: false
+                running: false
+                onTriggered: parent.isActive = true
+            }
         }
     }
 }

@@ -1,22 +1,34 @@
 #include "GameLogic.h"
 
+
+
 GameLogic::GameLogic(QObject *parent) :
     QObject(parent),
-    m_time(0),
-    m_steps(0),
-    m_score(0),
+    m_settings(this),
     m_state(NO_CHECKED),
     m_lastAction(NO_ACTION)
 {
-//    int mass[2] = ;
+    m_time = m_settings.value("Time", 0).toInt();
+    m_steps = m_settings.value("Steps", 0).toInt();
+    m_score = m_settings.value("Score", 0).toInt();
     m_nums.append(1);    m_nums.append(1);    m_nums.append(1);    m_nums.append(2);
     m_nums.append(1);    m_nums.append(3);    m_nums.append(1);    m_nums.append(4);
     m_nums.append(1);    m_nums.append(5);    m_nums.append(1);    m_nums.append(6);
     m_nums.append(1);    m_nums.append(7);    m_nums.append(1);    m_nums.append(8);
     m_nums.append(1);    m_nums.append(9);
 
-    /*m_nums = */m_settings.value("NumsList", QVariant(m_nums)).toList();
+    connect(&calc_, SIGNAL(listIntToStringSig(QStringList)), this, SLOT(saveNums(QStringList)));
+    connect(&calc_, SIGNAL(listStringToIntSig(QList<int>)), this, SLOT(loadNums(QList<int>)));
+    connect(&calc_, SIGNAL(nextStepSig()), this, SLOT(nextStepSlot()));
 
+    if(m_settings.contains("NumsList"))        
+        calc_.listStringToIntStart(m_settings.value("NumsList").toStringList());
+//        m_nums = listStringToInt(m_settings.value("NumsList").toStringList());
+}
+
+void GameLogic::saveNumsList()
+{
+    calc_.listIntToStringStart(m_nums);
 }
 
 void GameLogic::checkCell(int pos)
@@ -105,28 +117,31 @@ void GameLogic::nextStep()
     m_lastAction = NEXT_STEP;
     b_nums = m_nums;
 
-    for(int k = 0; k < m_nums.length(); k+=9){
-        if(m_nums.at(k) == 0){
-            for(int i = k+1; i < k+9; i++){
-                if(m_nums.at(i) != 0)
-                    break;
-                if(i == k+8){
-                    while(i!=k){
-                        m_nums.removeAt(i);
-                        i--;
-                    }
-                   k-=9;
-                }
-            }
-        }
-    }
+    calc_.nextStepStart(&b_nums, &m_nums);
+//    for(int k = 0; k < m_nums.length(); k+=9){
+//        if(m_nums.at(k) == 0){
+//            for(int i = k+1; i < k+9; i++){
+//                if(m_nums.at(i) != 0)
+//                    break;
+//                if(i == k+8){
+//                    while(i!=k){
+//                        m_nums.removeAt(i);
+//                        i--;
+//                    }
+//                   k-=9;
+//                }
+//            }
+//        }
+//    }
 
-    QList<int> nums(m_nums);
-    foreach(int n, nums){
-        if(n != 0)
-            m_nums.append(n);
-    }
-    emit numsChanged();
+//    QList<int> nums(m_nums);
+//    foreach(int n, nums){
+//        if(n != 0)
+//            m_nums.append(n);
+//    }
+    setSteps(m_steps+1);
+//    m_settings.setValue("NumsList", listIntToString(m_nums));
+//    emit numsChanged();
 
     //    rep.model = nums;
 }
@@ -143,6 +158,7 @@ void GameLogic::restart()
     m_time = 0;
     m_steps = 0;
     m_score = 0;
+    m_settings.clear();
     m_state = NO_CHECKED;
     emit numsChanged();
     emit timeChanged();
@@ -159,6 +175,10 @@ void GameLogic::undo()
     case NEXT_STEP:
         m_nums = b_nums;
         b_nums.clear();
+        setSteps(m_steps-1);
+
+        calc_.listIntToStringStart(m_nums);
+
         break;
     case DEL_NUMS:
         foreach (Pair p, b_pairs) {
@@ -166,12 +186,16 @@ void GameLogic::undo()
         }
         b_pairs.clear();
         m_score -= SCORE_CONSTANT;
+        m_settings.setValue("Score", m_score);
+        calc_.listIntToStringStart(m_nums);
+//        m_settings.setValue("NumsList", listIntToString(m_nums));
         emit scoreChanged();
         break;
     default:
         return;
     }
     emit numsChanged();
+
     m_lastAction = NO_ACTION;
 }
 
@@ -204,6 +228,7 @@ void GameLogic::setTime(int arg)
 {
     if (m_time != arg) {
         m_time = arg;
+        m_settings.setValue("Time", arg);
         emit timeChanged();
     }
 }
@@ -213,6 +238,7 @@ void GameLogic::setSteps(int arg)
 {
     if (m_steps != arg) {
         m_steps = arg;
+        m_settings.setValue("Steps", arg);
         emit stepsChanged();
     }
 }
@@ -221,6 +247,7 @@ void GameLogic::setScore(int arg)
 {
     if (m_score != arg) {
         m_score = arg;
+        m_settings.setValue("Score", arg);
         emit scoreChanged();
     }
 }
@@ -232,3 +259,25 @@ void GameLogic::setState(int arg)
         emit stateChanged();
     }
 }
+
+void GameLogic::loadNums(QList<int> retVal)
+{
+    m_nums = retVal;
+    emit numsChanged();
+}
+
+void GameLogic::saveNums(QStringList retVal)
+{
+    m_settings.setValue("NumsList", retVal);
+}
+
+void GameLogic::nextStepSlot()
+{
+    if(m_nums.length() == 0){
+        emit endGame();
+        return;
+    }
+    saveNumsList();
+    emit numsChanged();
+}
+

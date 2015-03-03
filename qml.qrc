@@ -6,5 +6,10 @@
         <file>Option.qml</file>
         <file>Btn.qml</file>
         <file>Cell.qml</file>
+        <file>logo_D.png</file>
+        <file>logo_G.png</file>
+        <file>logo_S.png</file>
+        <file>logo_T.png</file>
+        <file>End.qml</file>
     </qresource>
 </RCC>

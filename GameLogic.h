@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QSettings>
+#include "AsyncCalc.h"
 
 #define NO_CHECKED          (0)
 #define ONE_CELL_CHECKED    (1)
@@ -19,6 +20,7 @@ struct Pair{
     int value;
 };
 
+
 class GameLogic : public QObject
 {
     Q_OBJECT
@@ -27,7 +29,7 @@ class GameLogic : public QObject
 
     QList<int> b_nums;
     QList<Pair> b_pairs;
-
+    AsyncCalc calc_;
     int m_steps;
     int m_score;
     int m_state;
@@ -46,6 +48,7 @@ public:
     Q_PROPERTY(int numsCount READ numsCount NOTIFY numsChanged)
     Q_PROPERTY(int state READ state WRITE setState NOTIFY stateChanged)
 
+    Q_INVOKABLE void    saveNumsList();
     Q_INVOKABLE void    checkCell(int pos);
     Q_INVOKABLE int     getNum(int i);
     Q_INVOKABLE void    numToNull(int i);
@@ -65,7 +68,7 @@ signals:
     void numsChanged();
     void stepsChanged();
     void scoreChanged();
-
+    void endGame();
     void stateChanged();
 
 public slots:
@@ -73,6 +76,9 @@ public slots:
     void setSteps(int arg);
     void setScore(int arg);
     void setState(int arg);
+    void loadNums(QList<int> retVal);
+    void saveNums(QStringList retVal);
+    void nextStepSlot();
 };
 
 #endif // GAMELOGIC_H
