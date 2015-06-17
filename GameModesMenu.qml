@@ -1,6 +1,6 @@
 import QtQuick 2.2
 import QtQuick.Layouts 1.1
-
+import QtQuick.Controls 1.2
 Rectangle {
     id:menuField
     color: "#fdf9f0";
@@ -87,10 +87,10 @@ Rectangle {
                     width: grid.width;
                     height: butField.cellSize
                     anchors.horizontalCenter: parent.horizontalCenter;
-                    text: qsTr("CONTINUE");
+                    text: qsTr("CLASSIC");
                     fntSize: height/3;
-                    disable: !logic.haveSaves()
                     onClicked: {
+                        logic.restart()
                         mainLoader.source = "Game.qml"
                     }
 
@@ -100,47 +100,65 @@ Rectangle {
                     width: grid.width;
                     height: butField.cellSize
                     anchors.horizontalCenter: parent.horizontalCenter;
-                    text: qsTr("NEW GAME");
+                    text: qsTr("RANDOM");
                     fntSize: height/3;
+                    disable: true
                     onClicked: {
-                        mainLoader.source = "GameModesMenu.qml"
                     }
                 }
-//                Btn{
-//                    id: option
-//                    width: grid.width;
-//                    height: butField.cellSize
-//                    anchors.horizontalCenter: parent.horizontalCenter;
-//                    text: qsTr("OPTIONS");
-//                    fntSize: height/3;
-//                    onClicked: {
-//                        mainLoader.source = "Option.qml"
-//                    }
-//                }
                 Btn{
-                    id: about
+                    id: option
                     width: grid.width;
                     height: butField.cellSize
                     anchors.horizontalCenter: parent.horizontalCenter;
-                    text: qsTr("ABOUT");
+                    text: qsTr("IN TIME");
+                    disable: true
                     fntSize: height/3;
-                    onClicked: {
+                    MouseArea{
+                        anchors.fill: parent;
+                        onClicked: {
+                        }
                     }
+                }
+                Btn{
+                    id: guide
+                    width: grid.width;
+                    height: butField.cellSize
+                    anchors.horizontalCenter: parent.horizontalCenter;
+                    text: qsTr("GUIDE");
+                    fntSize: height/3;
+                    onClicked: mainLoader.source = "Guide.qml"
+
                 }
                 Btn{
                     id: exit
                     width: grid.width;
                     height: butField.cellSize
                     anchors.horizontalCenter: parent.horizontalCenter;
-                    text: qsTr("EXIT");
+                    text: qsTr("BACK");
                     fntSize: height/3;
-                    MouseArea{
-                        anchors.fill: parent;
-                        onClicked: Qt.quit();
+                    onClicked: mainLoader.source = "MainMenu.qml"
+
+                }
+                ClearField{
+                    width: grid.width;
+                    height: butField.cellSize
+                    Text{
+                        anchors.fill: parent
+                        text: qsTr("WARNING! If you start a new game, the current progress will be lost!")
+                        color: "darkred"
+                        horizontalAlignment: Text.AlignHCenter;
+                        verticalAlignment: Text.AlignVCenter;
+                        fontSizeMode: Text.Fit;
+                        font.family: "Arial"
+                        font.bold: true
+                        wrapMode: Text.WordWrap;
                     }
                 }
+
                 Grid{
                     id:grid
+    //                anchors.fill:parent
                     anchors.horizontalCenter: parent.horizontalCenter;
                     columns: 4
                     spacing: 7
@@ -153,12 +171,14 @@ Rectangle {
                         }
                     }
                 }
+
             }
         }
 
 
         Grid{
             id:gridRight
+    //                anchors.fill:parent
             anchors.left: butField.right
             anchors.top: butField.top
             anchors.bottom: butField.bottom

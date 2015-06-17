@@ -8,27 +8,12 @@ GameLogic::GameLogic(QObject *parent) :
     m_state(NO_CHECKED),
     m_lastAction(NO_ACTION)
 {
-    m_time = m_settings.value("Time", 0).toInt();
-    m_steps = m_settings.value("Steps", 0).toInt();
-    m_score = m_settings.value("Score", 0).toInt();
-    m_nums.append(1);    m_nums.append(1);    m_nums.append(1);    m_nums.append(2);
-    m_nums.append(1);    m_nums.append(3);    m_nums.append(1);    m_nums.append(4);
-    m_nums.append(1);    m_nums.append(5);    m_nums.append(1);    m_nums.append(6);
-    m_nums.append(1);    m_nums.append(7);    m_nums.append(1);    m_nums.append(8);
-    m_nums.append(1);    m_nums.append(9);
-
-    connect(&calc_, SIGNAL(listIntToStringSig(QStringList)), this, SLOT(saveNums(QStringList)));
-    connect(&calc_, SIGNAL(listStringToIntSig(QList<int>)), this, SLOT(loadNums(QList<int>)));
-    connect(&calc_, SIGNAL(nextStepSig()), this, SLOT(nextStepSlot()));
-
-    if(m_settings.contains("NumsList"))        
-        calc_.listStringToIntStart(m_settings.value("NumsList").toStringList());
-//        m_nums = listStringToInt(m_settings.value("NumsList").toStringList());
+    initialize();
 }
 
 void GameLogic::saveNumsList()
 {
-    calc_.listIntToStringStart(m_nums);
+    m_calc.listIntToStringStart(m_nums);
 }
 
 void GameLogic::checkCell(int pos)
@@ -117,33 +102,10 @@ void GameLogic::nextStep()
     m_lastAction = NEXT_STEP;
     b_nums = m_nums;
 
-    calc_.nextStepStart(&b_nums, &m_nums);
-//    for(int k = 0; k < m_nums.length(); k+=9){
-//        if(m_nums.at(k) == 0){
-//            for(int i = k+1; i < k+9; i++){
-//                if(m_nums.at(i) != 0)
-//                    break;
-//                if(i == k+8){
-//                    while(i!=k){
-//                        m_nums.removeAt(i);
-//                        i--;
-//                    }
-//                   k-=9;
-//                }
-//            }
-//        }
-//    }
+    m_calc.nextStepStart(&b_nums, &m_nums);
 
-//    QList<int> nums(m_nums);
-//    foreach(int n, nums){
-//        if(n != 0)
-//            m_nums.append(n);
-//    }
     setSteps(m_steps+1);
-//    m_settings.setValue("NumsList", listIntToString(m_nums));
-//    emit numsChanged();
 
-    //    rep.model = nums;
 }
 
 void GameLogic::restart()
@@ -177,7 +139,7 @@ void GameLogic::undo()
         b_nums.clear();
         setSteps(m_steps-1);
 
-        calc_.listIntToStringStart(m_nums);
+        m_calc.listIntToStringStart(m_nums);
 
         break;
     case DEL_NUMS:
@@ -187,7 +149,7 @@ void GameLogic::undo()
         b_pairs.clear();
         m_score -= SCORE_CONSTANT;
         m_settings.setValue("Score", m_score);
-        calc_.listIntToStringStart(m_nums);
+        m_calc.listIntToStringStart(m_nums);
 //        m_settings.setValue("NumsList", listIntToString(m_nums));
         emit scoreChanged();
         break;
@@ -197,6 +159,17 @@ void GameLogic::undo()
     emit numsChanged();
 
     m_lastAction = NO_ACTION;
+}
+
+bool GameLogic::haveSaves()
+{
+    if(m_settings.contains("NumsList")  ||
+       m_settings.contains("Time")      ||
+       m_settings.contains("Steps")     ||
+       m_settings.contains("Score"))
+        return true;
+    else
+        return false;
 }
 
 int GameLogic::time() const
@@ -279,5 +252,31 @@ void GameLogic::nextStepSlot()
     }
     saveNumsList();
     emit numsChanged();
+}
+
+void GameLogic::initialize()
+{
+
+    connect(&m_calc, SIGNAL(listIntToStringSig(QStringList)), this, SLOT(saveNums(QStringList)));
+    connect(&m_calc, SIGNAL(listStringToIntSig(QList<int>)), this, SLOT(loadNums(QList<int>)));
+    connect(&m_calc, SIGNAL(nextStepSig()), this, SLOT(nextStepSlot()));
+
+    m_time = m_settings.value("Time", 0).toInt();
+    m_steps = m_settings.value("Steps", 0).toInt();
+    m_score = m_settings.value("Score", 0).toInt();
+    /*
+     * TODO: Поменять на нормальный список.
+     * */
+    if(m_settings.contains("NumsList")){
+        m_calc.listStringToIntStart(m_settings.value("NumsList").toStringList());
+    }
+    else{
+        m_nums.append(1);    m_nums.append(1);    m_nums.append(1);    m_nums.append(2);
+        m_nums.append(1);    m_nums.append(3);    m_nums.append(1);    m_nums.append(4);
+        m_nums.append(1);    m_nums.append(5);    m_nums.append(1);    m_nums.append(6);
+        m_nums.append(1);    m_nums.append(7);    m_nums.append(1);    m_nums.append(8);
+        m_nums.append(1);    m_nums.append(9);
+    }
+
 }
 

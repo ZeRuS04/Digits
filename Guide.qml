@@ -9,13 +9,6 @@ Rectangle {
     property int score_constant:10
     property var pair: [];
 
-    Timer{
-        interval: 1000; running: true; repeat: true
-        onTriggered:{
-            logic.time++;
-        }
-    }
-
     Flickable{
 
         anchors{
@@ -113,78 +106,6 @@ Rectangle {
                 color: "#fdf9f0";
             }
         }
-
-        RowLayout{
-            anchors.fill: parent
-            Button{
-                anchors.margins: 10
-                id: mainMenu
-                width: height
-                Layout.fillHeight: true
-                text: "Menu"
-                onClicked: mainLoader.source = "MainMenu.qml"
-            }
-            ColumnLayout{
-
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                Label{
-                    id: scoreLabel
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
-                    fontSizeMode: Text.Fit;
-                    font.bold: true
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                    text: "Score: " + logic.score
-                }
-                Label{
-                    id: stepsLabel
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
-                    fontSizeMode: Text.Fit;
-                    font.bold: true
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                    text: "Steps: " + logic.steps
-                }
-
-            }
-            ColumnLayout{
-
-                Layout.fillWidth: true
-                Layout.fillHeight: true
-                Label{
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
-                    fontSizeMode: Text.Fit;
-                    font.bold: true
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                    text: "Time"
-                }
-                Label{
-                    id: timeLabel
-                    verticalAlignment: Text.AlignVCenter
-                    horizontalAlignment: Text.AlignHCenter
-                    fontSizeMode: Text.Fit;
-                    font.bold: true
-                    Layout.fillWidth: true
-                    Layout.fillHeight: true
-                    text: logic.secToString(logic.time)
-                }
-            }
-            Button{
-                id: restartButton
-                anchors.margins: 10
-                width: height
-                Layout.fillHeight: true
-                text: "Restart"
-                onClicked: logic.restart()
-            }
-        }
-
-
     }
 
     RowLayout{
@@ -224,4 +145,127 @@ Rectangle {
         }
     }
 
+    Rectangle{
+        anchors.fill: parent
+        color: Qt.rgba(0,0,0,0.5);
+        MouseArea{
+            anchors.fill: parent
+            onClicked: {}
+            hoverEnabled: true
+            onEntered: {}
+        }
+        Flickable{
+
+            anchors{
+    //            fill: parent
+                top: statRow2.bottom
+                right: parent.right
+                left: parent.left
+                bottom: btnRow.top
+            }
+            flickableDirection: Flickable.VerticalFlick
+
+            Grid{
+                id: grid2
+                columns: 9
+                spacing: mainRect.width/10/9
+                Repeater{
+                    id: rep2
+                    model: logic.numsCount
+
+                    delegate: Cell{
+                        id: rect2
+                        width: mainRect.width/10
+                        height: mainRect.width/10
+                        property int row: index/9
+                        property int column: index%9
+                        property int i: index
+                        state: n == 0 ? "Delete" : "Default"
+
+//                        color: {
+//                            if((index == 1) || (index == 10))
+//                                Qt.rgba(0,0,0,0);
+//                        }
+                        n: logic.getNum(index);
+
+                        Connections{
+                            target: logic
+                            onNumsChanged: {
+                                rect.n = logic.getNum(index);
+                                rect.state = (n == 0 ? "Delete" : "Default")
+                            }
+                        }
+
+                        MouseArea{
+                            anchors.fill: parent
+                            hoverEnabled: true
+                            onEntered: parent.border.width = 2
+                            onExited: parent.border.width = 1
+                            onClicked:{
+                                if((rect2.state == "Default") || (rect2.state == "Check")){
+                                    if(logic.state == 1){
+                                            if(logic.checkPair(pair[0].i, rect2.i)){
+                                                logic.numToNull(pair[0].i);
+                                                logic.numToNull(rect2.i)
+                                                logic.saveNumsList();
+                                                pair[0].state = "Delete"
+                                                rect2.state = "Delete";
+                                                mainRect.pair.length = 0;
+                                                logic.state = 0;
+                                                logic.score += mainRect.score_constant;
+    //                                            settings.setValue("Score", mainRect.score);
+
+                                            }else{
+                                                pair[0].state = "Default";
+                                                rect2.state = "Default";
+                                                mainRect.pair.length = 0;
+                                                logic.state = 0;
+                                            }
+                                    }else
+                                    {
+                                        rect2.state = "Check";
+                                        logic.checkCell(rect2.i);
+                                        pair.push( rect2 );
+                                    }
+    //                                settings.setValue("NumArray", mainRect.nums);
+                                }
+                            }
+                        }
+                        Component.onCompleted: {
+                            if((index == 1) || (index == 10))
+                                color = Qt.rgba(0,0,0,0);
+                        }
+                    }
+                }
+            }
+            contentHeight: grid.height
+            contentWidth: grid.width
+        }
+
+        Rectangle{
+
+            id: statRow2
+            anchors.top: parent.top
+            width: parent.width
+            height: mainRect.height/10
+            color: Qt.rgba(0,0,0,0);
+
+
+            RowLayout{
+                anchors.fill: parent
+                Button{
+                    anchors.margins: 10
+                    id: mainMenu2
+                    width: height
+                    Layout.fillHeight: true
+                    text: "Menu"
+                    onClicked: mainLoader.source = "MainMenu.qml"
+                }
+
+            }
+
+
+        }
+
+    }
 }

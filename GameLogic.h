@@ -8,7 +8,6 @@
 #define NO_CHECKED          (0)
 #define ONE_CELL_CHECKED    (1)
 
-
 #define NO_ACTION           (0)
 #define NEXT_STEP           (1)
 #define DEL_NUMS            (2)
@@ -29,13 +28,14 @@ class GameLogic : public QObject
 
     QList<int> b_nums;
     QList<Pair> b_pairs;
-    AsyncCalc calc_;
+    AsyncCalc m_calc;
     int m_steps;
     int m_score;
     int m_state;
 
     int m_lastAction;
     int *checkedCell_1;
+
     QSettings m_settings;
 
 
@@ -56,6 +56,7 @@ public:
     Q_INVOKABLE void    nextStep();
     Q_INVOKABLE void    restart();
     Q_INVOKABLE void    undo();
+    Q_INVOKABLE bool    haveSaves();
 
     int time() const;
     int steps() const;
@@ -79,6 +80,9 @@ public slots:
     void loadNums(QList<int> retVal);
     void saveNums(QStringList retVal);
     void nextStepSlot();
+
+private:
+    void initialize();
 };
 
 #endif // GAMELOGIC_H

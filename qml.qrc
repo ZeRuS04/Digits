@@ -11,5 +11,8 @@
         <file>logo_S.png</file>
         <file>logo_T.png</file>
         <file>End.qml</file>
+        <file>GameModesMenu.qml</file>
+        <file>ClearField.qml</file>
+        <file>Guide.qml</file>
     </qresource>
 </RCC>

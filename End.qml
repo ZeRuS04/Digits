@@ -80,12 +80,9 @@ Rectangle {
             anchors.horizontalCenter: parent.horizontalCenter;
             text: qsTr("Back to menu");
             fntSize: height/3;
-            MouseArea{
-                anchors.fill: parent;
-                onClicked: {
-                    logic.restart();
-                    mainLoader.source = "MainMenu.qml"
-                }
+            onClicked: {
+                logic.restart();
+                mainLoader.source = "MainMenu.qml"
             }
         }
     }

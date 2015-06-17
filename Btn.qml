@@ -2,14 +2,14 @@ import QtQuick 2.0
 
 Rectangle {
     id: btn
-    state: "Normal";
+    state: disable ? "Disable" : "Normal";
     border.color: "#845a00";
     property string text: "";
-
+    property bool disable: false
     property color colorText: "black";
     property color colorText_2: "white";
     property int fntSize: 30
-
+    signal clicked();
     Text{
         id: buttonText
         anchors.fill: parent;
@@ -40,13 +40,26 @@ Rectangle {
                 name: "Pressed"
                 PropertyChanges {
                     target: btn;
+                    color: "lightgreen";
+                    border.width: 1;
+                    radius: 5;
+                }
+                PropertyChanges {
+                    target: buttonText
+                    color: parent.colorText;
+                }
+        },
+        State{
+                name: "Disable"
+                PropertyChanges {
+                    target: btn;
                     color: "#6b6d6d";
                     border.width: 0;
                     radius: 0;
                 }
                 PropertyChanges {
                     target: buttonText
-                    color: parent.colorText_2;
+                    color: parent.colorText;
                 }
         }
 
@@ -55,8 +68,12 @@ Rectangle {
         anchors.fill: parent;
         hoverEnabled: true;
 
-        onEntered: btn.state = "Pressed"
-        onExited: btn.state = "Normal"
-        onPressed: btn.state = "Pressed"
+        onEntered: !btn.disable ? btn.state = "Pressed" : btn.state = "Disable"
+        onExited: !btn.disable ? btn.state = "Normal" : btn.state = "Disable"
+        onPressed: !btn.disable ? btn.state = "Pressed" : btn.state = "Disable"
+        onClicked: {
+            if(!btn.disable)
+                btn.clicked();
+        }
     }
 }

@@ -55,9 +55,11 @@ void AsyncCalc::nextStep()
     for(int k = 0; k < m_nums->length(); k+=9){
         if(m_nums->at(k) == 0){
             for(int i = k+1; i < k+9; i++){
-                if(m_nums->at(i) != 0){
+
+                if((m_nums->at(i) != 0) || (m_nums->size() >= i)){
                     break;
                 }
+
                 if(i == k+8){
                     while(i>=k){
                         m_nums->removeAt(i);
