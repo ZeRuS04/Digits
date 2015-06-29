@@ -4,6 +4,7 @@ Rectangle {
     id: rect
     height: width
     property int n;
+    property bool blocked: false
 
     border.color: "#845a00"
     Text{
@@ -18,6 +19,7 @@ Rectangle {
         id: ma
         anchors.fill: parent
         hoverEnabled: true
+
     }
 
     state: "Default"

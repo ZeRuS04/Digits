@@ -6,87 +6,30 @@ Rectangle {
     id: mainRect
     anchors.fill: parent
     color: "#fdf9f0";
-    property int score_constant:10
+    property var startNums: [1,1,1,2,1,3,1,4,1,5,1,6,1,7,1,8,1,9]
     property var pair: [];
+    property int stepNumber: 0
+    property var steps: [[],[1, 10], [8,17], [0, 2]]
+    property var text: [
+        "Приветствую вас в игре DIGITS! Это старая советская головоломка. Её правила очень просты. Коснись что бы продолжить",
+        "Вы должны сократить все цифры(в классическом варианте). Сократить можно одинаковые цифры стоящие рядом. Попробуйте.",
+        "Так же можно сокращать цифры, которые в сумме дают 10. Попробуйте.",
+        "Кроме того, если цифры не рядом, но между ними нет других цифр их тоже можно сократить. Попробуйте."
+    ]
+    property var cells: []
 
-    Flickable{
-
-        anchors{
-//            fill: parent
-            top: statRow.bottom
-            right: parent.right
-            left: parent.left
-            bottom: btnRow.top
-        }
-        flickableDirection: Flickable.VerticalFlick
-
-        Grid{
-            id: grid
-            columns: 9
-            spacing: mainRect.width/10/9
-            Repeater{
-                id: rep
-                model: logic.numsCount
-
-                delegate: Cell{
-                    id: rect
-                    width: mainRect.width/10
-                    height: mainRect.width/10
-                    property int row: index/9
-                    property int column: index%9
-                    property int i: index
-                    state: n == 0 ? "Delete" : "Default"
-//                    property bool vis: modelData == 0 ? false : true;
-                    n: logic.getNum(index);
-
-                    Connections{
-                        target: logic
-                        onNumsChanged: {
-                            rect.n = logic.getNum(index);
-                            rect.state = (n == 0 ? "Delete" : "Default")
-                        }
-                    }
-
-                    MouseArea{
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        onEntered: parent.border.width = 2
-                        onExited: parent.border.width = 1
-                        onClicked:{
-                            if((rect.state == "Default") || (rect.state == "Check")){
-                                if(logic.state == 1){
-                                        if(logic.checkPair(pair[0].i, rect.i)){
-                                            logic.numToNull(pair[0].i);
-                                            logic.numToNull(rect.i)
-                                            logic.saveNumsList();
-                                            pair[0].state = "Delete"
-                                            rect.state = "Delete";
-                                            mainRect.pair.length = 0;
-                                            logic.state = 0;
-                                            logic.score += mainRect.score_constant;
-//                                            settings.setValue("Score", mainRect.score);
-
-                                        }else{
-                                            pair[0].state = "Default";
-                                            rect.state = "Default";
-                                            mainRect.pair.length = 0;
-                                            logic.state = 0;
-                                        }
-                                }else
-                                {
-                                    rect.state = "Check";
-                                    logic.checkCell(rect.i);
-                                    pair.push( rect );
-                                }
-//                                settings.setValue("NumArray", mainRect.nums);
-                            }
-                        }
-                    }
-                }
+    function nextStep(index){
+        if(stepNumber >= steps.length){
+            /*
+              END guide
+              */
+            mainLoader.source = "GameModesMenu.qml"
+        }else{
+            for(var i = 0; i < steps[mainRect.stepNumber].length; i++){
+                cells[steps[mainRect.stepNumber][i]].block = false;
+                cells[steps[mainRect.stepNumber][i]].maVis = true;
             }
         }
-        contentHeight: grid.height
-        contentWidth: grid.width
     }
 
     Rectangle{
@@ -154,39 +97,37 @@ Rectangle {
             hoverEnabled: true
             onEntered: {}
         }
-        Flickable{
+        Rectangle{
 
             anchors{
-    //            fill: parent
+//                fill: parent
                 top: statRow2.bottom
                 right: parent.right
                 left: parent.left
                 bottom: btnRow.top
             }
-            flickableDirection: Flickable.VerticalFlick
+//            flickableDirection: Flickable.VerticalFlick
 
             Grid{
-                id: grid2
+                id: grid
                 columns: 9
                 spacing: mainRect.width/10/9
                 Repeater{
-                    id: rep2
-                    model: logic.numsCount
+                    id: rep
+                    model: 18
 
                     delegate: Cell{
-                        id: rect2
+                        id: rect
                         width: mainRect.width/10
                         height: mainRect.width/10
                         property int row: index/9
                         property int column: index%9
                         property int i: index
-                        state: n == 0 ? "Delete" : "Default"
+                        property bool maVis: false
+                        property bool block: true
+                        state: n != 0 ? "Delete" : "Default"
 
-//                        color: {
-//                            if((index == 1) || (index == 10))
-//                                Qt.rgba(0,0,0,0);
-//                        }
-                        n: logic.getNum(index);
+                        n: mainRect.startNums[index];
 
                         Connections{
                             target: logic
@@ -195,51 +136,69 @@ Rectangle {
                                 rect.state = (n == 0 ? "Delete" : "Default")
                             }
                         }
-
-                        MouseArea{
+                        Rectangle{
+                            id: cellBlock
                             anchors.fill: parent
-                            hoverEnabled: true
+                            radius: parent.radius
+                            visible: parent.block
+                            color: Qt.rgba(0,0,0,0.5);
+
+                        }
+                        MouseArea{
+                            id: cellMA
+                            anchors.fill: parent
+                            hoverEnabled:rect.state == "Delete" ? true : false
                             onEntered: parent.border.width = 2
                             onExited: parent.border.width = 1
+                            visible: rect.maVis
                             onClicked:{
-                                if((rect2.state == "Default") || (rect2.state == "Check")){
-                                    if(logic.state == 1){
-                                            if(logic.checkPair(pair[0].i, rect2.i)){
-                                                logic.numToNull(pair[0].i);
-                                                logic.numToNull(rect2.i)
-                                                logic.saveNumsList();
-                                                pair[0].state = "Delete"
-                                                rect2.state = "Delete";
-                                                mainRect.pair.length = 0;
-                                                logic.state = 0;
-                                                logic.score += mainRect.score_constant;
-    //                                            settings.setValue("Score", mainRect.score);
-
-                                            }else{
-                                                pair[0].state = "Default";
-                                                rect2.state = "Default";
-                                                mainRect.pair.length = 0;
-                                                logic.state = 0;
-                                            }
+                                if((rect.state == "Default") || (rect.state == "Check")){
+                                    if(pair.length == 1){
+                                        if(rect == pair[0]){
+                                            rect.state = "Default";
+                                            pair.length = 0;
+                                        }else{
+                                            pair[0].state = "Delete"
+                                            rect.state = "Delete";
+                                            pair.length = 0;
+                                            stepNumber++;
+                                            nextStep();
+                                        }
                                     }else
                                     {
-                                        rect2.state = "Check";
-                                        logic.checkCell(rect2.i);
-                                        pair.push( rect2 );
+                                        rect.state = "Check";
+                                        pair.push( rect );
                                     }
     //                                settings.setValue("NumArray", mainRect.nums);
                                 }
                             }
                         }
+
+
                         Component.onCompleted: {
+                            mainRect.cells.push(rect);
                             if((index == 1) || (index == 10))
-                                color = Qt.rgba(0,0,0,0);
+                            {
+                                rect.maVis = true
+                            }
                         }
+                    }
+                    Component.onCompleted: {
+                        mainRect.nextStep()
                     }
                 }
             }
-            contentHeight: grid.height
-            contentWidth: grid.width
+            Label{
+                anchors.bottom: parent.bottom
+                text: mainRect.text[stepNumber]
+                color: "white"
+                horizontalAlignment: Text.AlignHCenter;
+                verticalAlignment: Text.AlignVCenter;
+                fontSizeMode: Text.Fit;
+                font.family: "Arial"
+                font.bold: true
+                wrapMode: Text.WordWrap;
+            }
         }
 
         Rectangle{
