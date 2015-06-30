@@ -11,14 +11,20 @@ Rectangle {
     property int stepNumber: 0
     property var steps: [[],[1, 10], [8,17], [0, 2]]
     property var text: [
-        "Приветствую вас в игре DIGITS! Это старая советская головоломка. Её правила очень просты. Коснись что бы продолжить",
-        "Вы должны сократить все цифры(в классическом варианте). Сократить можно одинаковые цифры стоящие рядом. Попробуйте.",
-        "Так же можно сокращать цифры, которые в сумме дают 10. Попробуйте.",
-        "Кроме того, если цифры не рядом, но между ними нет других цифр их тоже можно сократить. Попробуйте."
+        "Приветствую вас в игре DIGITS! \n
+Это старая советская головоломка. Её правила очень просты. \n
+Коснись здесь что бы продолжить",
+        "Вы должны сократить все цифры(в классическом варианте). \n
+Сокращать можно одинаковые цифры стоящие рядом. \n
+Попробуйте.",
+        "Так же можно сокращать цифры, которые в сумме дают 10. \n
+Попробуйте.",
+        "Кроме того, если цифры не рядом, но между ними нет других цифр их тоже можно сократить. \n
+Попробуйте."
     ]
     property var cells: []
 
-    function nextStep(index){
+    function nextStep(){
         if(stepNumber >= steps.length){
             /*
               END guide
@@ -51,43 +57,6 @@ Rectangle {
         }
     }
 
-    RowLayout{
-        id: btnRow
-        anchors.bottom: parent.bottom
-        width: parent.width
-        height: mainRect.height/10
-        Button{
-            id: undoButton
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            text: "Undo"
-            onClicked: logic.undo();
-
-
-        }
-        Button{
-            id: nextStepButton
-            Layout.fillWidth: true
-            Layout.fillHeight: true
-            text: "Next step"
-            property bool isActive: true
-            onClicked:{
-                if(isActive){
-                    isActive = false;
-                    timer.start();
-                    logic.nextStep();
-                }
-            }
-            Timer{
-                id: timer
-                interval: 500
-                repeat: false
-                running: false
-                onTriggered: parent.isActive = true
-            }
-        }
-    }
-
     Rectangle{
         anchors.fill: parent
         color: Qt.rgba(0,0,0,0.5);
@@ -98,7 +67,7 @@ Rectangle {
             onEntered: {}
         }
         Rectangle{
-
+            id: gridField
             anchors{
 //                fill: parent
                 top: statRow2.bottom
@@ -108,6 +77,7 @@ Rectangle {
             }
 //            flickableDirection: Flickable.VerticalFlick
 
+            color: Qt.rgba(0,0,0,0.0);
             Grid{
                 id: grid
                 columns: 9
@@ -188,19 +158,34 @@ Rectangle {
                     }
                 }
             }
-            Label{
-                anchors.bottom: parent.bottom
-                text: mainRect.text[stepNumber]
-                color: "white"
-                horizontalAlignment: Text.AlignHCenter;
-                verticalAlignment: Text.AlignVCenter;
-                fontSizeMode: Text.Fit;
-                font.family: "Arial"
-                font.bold: true
-                wrapMode: Text.WordWrap;
-            }
-        }
 
+
+        }
+        Label{
+            anchors.bottom: btnRow.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            height: parent.height/4
+            text: mainRect.text[stepNumber]
+            color: "#fdf9f0"
+            horizontalAlignment: Text.AlignHCenter;
+            verticalAlignment: Text.AlignVCenter;
+            font.pointSize: 72
+            fontSizeMode: Text.Fit;
+            font.family: "Arial"
+            font.bold: true
+            wrapMode: Text.WordWrap;
+            MouseArea{
+                anchors.fill: parent;
+                onClicked: {
+                    if(mainRect.steps[mainRect.stepNumber].length === 0){
+                        mainRect.stepNumber++;
+                        nextStep();
+                    }
+                }
+            }
+
+        }
         Rectangle{
 
             id: statRow2
@@ -220,11 +205,45 @@ Rectangle {
                     text: "Menu"
                     onClicked: mainLoader.source = "MainMenu.qml"
                 }
+            }
+        }
+        RowLayout{
+            id: btnRow
+            anchors.bottom: parent.bottom
+            width: parent.width
+            height: mainRect.height/10
+            Button{
+                id: undoButton
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                text: "Undo"
+//                onClicked: logic.undo();
+
 
             }
-
-
+            Button{
+                id: nextStepButton
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+                text: "Next step"
+                property bool isActive: true
+                onClicked:{
+//                    if(isActive){
+//                        isActive = false;
+//                        timer.start();
+//                        logic.nextStep();
+//                    }
+                }
+                Timer{
+                    id: timer
+                    interval: 500
+                    repeat: false
+                    running: false
+                    onTriggered: parent.isActive = true
+                }
+            }
         }
 
     }
+
 }
