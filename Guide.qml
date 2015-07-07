@@ -11,24 +11,24 @@ Rectangle {
     property int stepNumber: 0
     property var steps: [[],[1, 10], [8,17], [0, 2], [-1], [-2], [-3]]
     property var text: [
-        "Приветствую Вас в игре DIGITS! \n
-Это старая советская головоломка. Её правила очень просты. \n
-Коснитесь здесь, чтобы продолжить",
-        "Вы должны сократить все цифры(в классическом варианте). \n
-Сокращать можно одинаковые цифры, стоящие рядом. \n
-Попробуйте.",
-        "Также можно сокращать цифры, которые в сумме дают 10. \n
-Попробуйте.",
-        "Кроме того, если цифры не рядом, но между ними нет других цифр, их тоже можно сократить. \n
-Попробуйте.",
-        "Когда кончились все варианты сокращений(или если Вы не хотите сокращать),\n
-вы можете нажать на кнопку \"Next step\".\n
-Попробуйте.",
-        "Если Вы сделали ошибку, Вы можете отменить свое последнее действие.\n
-Для этого нажмите на кнопку \"Undo\".\n
-Попробуйте.",
-        "Чтобы начать новую игру, нажмите на кнопку \"Restart\".\n
-Чтобы выйти в меню, нажмите на кнопку  \"Menu\".",
+        "Grüsse Sie im Spiel DIGITS! \n
+Es ist ein altes Puzzle, das sehr einfache Regeln hat. \n
+Tippen hier für die Forzetzung.",
+        "Sie müssen alle Zahlen reduzieren (in der klassischen Version). \n
+Man kann gleiche Zahlen reduzieren, die in der Nähe finden sind. \n
+Versuchen.",
+        "Auch kann man die Zahlen reduzieren, deren Summe gleich 10 ist. \n
+Versuchen.",
+        "Wenn zwischen zwei Zahlen andere Zahlen fehlen, können Sie diese Zahlen reduzieren, obwohl sie nicht in der Nähe sind. \n
+Versuchen.",
+        "Wenn die Reduzierungsoptionen fehlen (oder Sie wollen nicht reduzieren),\n
+können Sie tippen \"Next step\".\n
+Versuchen.",
+        "Wenn Sie eine Fehler machen, können Sie seine letzte Wirkung abschaffen.\n
+Für die Abschaffung tippen \"Undo\".\n
+Versuchen.",
+        "Wenn Sie neues Spiel beginnen wollen, tippen \"Restart\".\n
+Wenn Sie ins Menu gehen wollen, tippen \"Menu\".",
         ""
     ]
     property var cells: []
