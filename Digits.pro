@@ -17,3 +17,6 @@ include(deployment.pri)
 HEADERS += \
     GameLogic.h \
     AsyncCalc.h
+
+DISTFILES += \
+    android-build/AndroidManifest.xml
