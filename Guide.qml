@@ -213,23 +213,24 @@ Rectangle {
 
 
             RowLayout{
+                id: mLay
                 anchors.fill: parent
+                anchors.margins: 7
                 Button{
-                    anchors.margins: 10
                     id: menu
                     width: height
                     Layout.fillHeight: true
-                    text: "Menu"
+                    text: qsTr("Menu")
                     onClicked: mainLoader.source = "MainMenu.qml"
                 }
             }
             Button{
-                anchors.right: statRow2.right
-                anchors.top: statRow2.top
+                anchors.right: mLay.right
+                anchors.top: mLay.top
                 id: restart
                 width: menu.width
                 height: menu.height
-                text: "Restart"
+                text: qsTr("Restart")
                 onClicked: {
                     logic.restart();
                     mainLoader.source = "Game.qml"
@@ -251,13 +252,14 @@ Rectangle {
         RowLayout{
             id: btnRow
             anchors.bottom: parent.bottom
+            anchors.margins: 7
             width: parent.width
             height: mainRect.height/10
             Button{
                 id: undoButton
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                text: "Undo"
+                text: qsTr("Undo")
                 onClicked: {
                     startNums.length = 0;
                     startNums.push(0,0,0,2,1,3,1,4,0,5,0,6,1,7,1,8,1,0);
@@ -284,7 +286,7 @@ Rectangle {
                 id: nextStepButton
                 Layout.fillWidth: true
                 Layout.fillHeight: true
-                text: "Next step"
+                text: qsTr("Next step")
                 property bool isActive: true
                 onClicked:{
                     mainRect.startNums.push(2,1,3,1,4,5,6,1,7,1,8);
@@ -311,6 +313,17 @@ Rectangle {
             }
         }
 
+    }
+    focus: true
+    Keys.onReleased: {
+        if (event.key === Qt.Key_Back) {
+
+            mainLoader.source = "MainMenu.qml"
+            event.accepted = true
+        }
+    }
+    Component.onCompleted: {
+        forceActiveFocus();
     }
 
 }

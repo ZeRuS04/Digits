@@ -4,6 +4,14 @@
 #include <QObject>
 #include <QSettings>
 #include "AsyncCalc.h"
+#define		APP_NAME	"DIGITS"
+#define		ORG_NAME    QT_TR_NOOP("Eugeniy Sinelshchikov")
+#define		ORG_DOMAIN	"zerus04@gmail.com"
+
+#define     G_RELEASE	"0"
+#define     G_VERSION(x) ("v" G_RELEASE "." x)
+
+
 
 #define NO_CHECKED          (0)
 #define ONE_CELL_CHECKED    (1)
@@ -57,6 +65,12 @@ public:
     Q_INVOKABLE void    restart();
     Q_INVOKABLE void    undo();
     Q_INVOKABLE bool    haveSaves();
+
+
+    Q_INVOKABLE QString appName();
+    Q_INVOKABLE QString appVersion();
+    Q_INVOKABLE QString appMail();
+    Q_INVOKABLE QString appAuthor();
 
     int time() const;
     int steps() const;

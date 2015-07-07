@@ -95,31 +95,37 @@ Rectangle {
                     }
 
                 }
-                Btn{
-                    id: start
-                    width: grid.width;
-                    height: butField.cellSize
+                Row{
+                    spacing: 7
                     anchors.horizontalCenter: parent.horizontalCenter;
-                    text: qsTr("RANDOM");
-                    fntSize: height/3;
-                    disable: true
-                    onClicked: {
-                    }
-                }
-                Btn{
-                    id: option
-                    width: grid.width;
-                    height: butField.cellSize
-                    anchors.horizontalCenter: parent.horizontalCenter;
-                    text: qsTr("IN TIME");
-                    disable: true
-                    fntSize: height/3;
-                    MouseArea{
-                        anchors.fill: parent;
+                    Btn{
+                        id: random
+                        width: grid.width/2-4;
+                        height: butField.cellSize
+
+                        text: qsTr("RANDOM");
+                        fntSize: height/3;
+                        disable: true
                         onClicked: {
                         }
                     }
+                    Btn{
+                        id: inTime
+                        width: grid.width/2-3;
+                        height: butField.cellSize
+//                        anchors.horizontalCenter: parent.horizontalCenter;
+                        text: qsTr("IN TIME");
+                        disable: true
+                        fntSize: height/3;
+                        MouseArea{
+                            anchors.fill: parent;
+                            onClicked: {
+                            }
+                        }
+                    }
                 }
+
+
                 Btn{
                     id: guide
                     width: grid.width;
@@ -193,5 +199,16 @@ Rectangle {
                     state: "Delete"
                 }
             }
+        }
+        focus: true
+        Keys.onReleased: {
+            if (event.key === Qt.Key_Back) {
+
+                mainLoader.source = "MainMenu.qml"
+                event.accepted = true
+            }
+        }
+        Component.onCompleted: {
+            forceActiveFocus();
         }
 }

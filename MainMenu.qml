@@ -125,6 +125,7 @@ Rectangle {
                     text: qsTr("ABOUT");
                     fntSize: height/3;
                     onClicked: {
+                        mainLoader.source = "About.qml"
                     }
                 }
                 Btn{

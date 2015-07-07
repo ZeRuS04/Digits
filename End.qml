@@ -86,4 +86,15 @@ Rectangle {
             }
         }
     }
+    focus: true
+    Keys.onReleased: {
+        if (event.key === Qt.Key_Back) {
+
+            mainLoader.source = "MainMenu.qml"
+            event.accepted = true
+        }
+    }
+    Component.onCompleted: {
+        forceActiveFocus();
+    }
 }

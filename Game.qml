@@ -18,6 +18,7 @@ Rectangle {
 
     Flickable{
 
+        anchors.margins: 3
         anchors{
 //            fill: parent
             top: statRow.bottom
@@ -116,12 +117,12 @@ Rectangle {
 
         RowLayout{
             anchors.fill: parent
+            anchors.margins: 7
             GButton{
-                anchors.margins: 10
                 id: mainMenu
                 width: height
                 Layout.fillHeight: true
-                text: "Menu"
+                text: qsTr("Menu")
                 onClicked: mainLoader.source = "MainMenu.qml"
             }
             ColumnLayout{
@@ -136,7 +137,7 @@ Rectangle {
                     font.bold: true
                     Layout.fillWidth: true
                     Layout.fillHeight: true
-                    text: "Score: " + logic.score
+                    text: qsTr("Score: ") + logic.score
                 }
                 Label{
                     id: stepsLabel
@@ -146,7 +147,7 @@ Rectangle {
                     font.bold: true
                     Layout.fillWidth: true
                     Layout.fillHeight: true
-                    text: "Steps: " + logic.steps
+                    text: qsTr("Steps: ") + logic.steps
                 }
 
             }
@@ -161,7 +162,7 @@ Rectangle {
                     font.bold: true
                     Layout.fillWidth: true
                     Layout.fillHeight: true
-                    text: "Time"
+                    text: qsTr("Time")
                 }
                 Label{
                     id: timeLabel
@@ -179,7 +180,7 @@ Rectangle {
                 anchors.margins: 10
                 width: height
                 Layout.fillHeight: true
-                text: "Restart"
+                text: qsTr("Restart")
                 onClicked: logic.restart()
             }
         }
@@ -190,22 +191,25 @@ Rectangle {
     RowLayout{
         id: btnRow
         anchors.bottom: parent.bottom
+        anchors.margins: 7
         width: parent.width
         height: mainRect.height/10
         GButton{
             id: undoButton
+            anchors.margins: 7
             Layout.fillWidth: true
             Layout.fillHeight: true
-            text: "Undo"
+            text: qsTr("Undo")
             onClicked: logic.undo();
 
 
         }
         GButton{
             id: nextStepButton
+            anchors.margins: 7
             Layout.fillWidth: true
             Layout.fillHeight: true
-            text: "Next step"
+            text: qsTr("Next step")
             property bool isActive: true
             onClicked:{
                 if(isActive){
@@ -224,4 +228,15 @@ Rectangle {
         }
     }
 
+    focus: true
+    Keys.onReleased: {
+        if (event.key === Qt.Key_Back) {
+
+            mainLoader.source = "MainMenu.qml"
+            event.accepted = true
+        }
+    }
+    Component.onCompleted: {
+        forceActiveFocus();
+    }
 }

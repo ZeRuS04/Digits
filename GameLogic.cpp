@@ -2,6 +2,8 @@
 
 
 
+QString version_info = G_VERSION("6");
+
 GameLogic::GameLogic(QObject *parent) :
     QObject(parent),
     m_settings(this),
@@ -170,6 +172,26 @@ bool GameLogic::haveSaves()
         return true;
     else
         return false;
+}
+
+QString GameLogic::appName()
+{
+    return APP_NAME;
+}
+
+QString GameLogic::appVersion()
+{
+    return version_info;
+}
+
+QString GameLogic::appMail()
+{
+    return ORG_DOMAIN;
+}
+
+QString GameLogic::appAuthor()
+{
+    return ORG_NAME;
 }
 
 int GameLogic::time() const
