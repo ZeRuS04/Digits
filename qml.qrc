@@ -1,20 +1,20 @@
 <RCC>
     <qresource prefix="/">
-        <file>main.qml</file>
-        <file>MainMenu.qml</file>
-        <file>Game.qml</file>
-        <file>Option.qml</file>
-        <file>Btn.qml</file>
-        <file>Cell.qml</file>
-        <file>logo_D.png</file>
-        <file>logo_G.png</file>
-        <file>logo_S.png</file>
-        <file>logo_T.png</file>
-        <file>End.qml</file>
-        <file>GameModesMenu.qml</file>
-        <file>ClearField.qml</file>
-        <file>Guide.qml</file>
-        <file>GButton.qml</file>
-        <file>About.qml</file>
+        <file>qml/main.qml</file>
+        <file>qml/MainMenu.qml</file>
+        <file>qml/Game.qml</file>
+        <file>qml/Option.qml</file>
+        <file>qml/Btn.qml</file>
+        <file>qml/Cell.qml</file>
+        <file>res/logo_D.png</file>
+        <file>res/logo_G.png</file>
+        <file>res/logo_S.png</file>
+        <file>res/logo_T.png</file>
+        <file>qml/End.qml</file>
+        <file>qml/GameModesMenu.qml</file>
+        <file>qml/ClearField.qml</file>
+        <file>qml/Guide.qml</file>
+        <file>qml/GButton.qml</file>
+        <file>qml/About.qml</file>
     </qresource>
 </RCC>

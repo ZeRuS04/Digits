@@ -53,7 +53,7 @@ Rectangle {
                         fillMode: Image.PreserveAspectFit
 //                        verticalAlignment: Image.AlignBottom
 
-                        source: "/logo_D.png"
+                        source: "/res/logo_D.png"
                     }
                     Image{
                         width: butField.cellSize
@@ -61,7 +61,7 @@ Rectangle {
                         fillMode: Image.PreserveAspectFit
 //                        verticalAlignment: Image.AlignBottom
 
-                        source: "/logo_G.png"
+                        source: "/res/logo_G.png"
                     }
                     Image{
                         width: butField.cellSize
@@ -69,7 +69,7 @@ Rectangle {
                         fillMode: Image.PreserveAspectFit
 //                        verticalAlignment: Image.AlignBottom
 
-                        source: "/logo_T.png"
+                        source: "/res/logo_T.png"
                     }
                     Image{
                         width: butField.cellSize
@@ -77,7 +77,7 @@ Rectangle {
                         fillMode: Image.PreserveAspectFit
 //                        verticalAlignment: Image.AlignBottom
 
-                        source: "/logo_S.png"
+                        source: "/res/logo_S.png"
                     }
                 }
 

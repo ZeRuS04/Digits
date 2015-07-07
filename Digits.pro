@@ -2,21 +2,18 @@ TEMPLATE = app
 
 QT += qml quick widgets
 
-SOURCES += main.cpp \
-    GameLogic.cpp \
-    AsyncCalc.cpp
+SOURCES += src/main.cpp \
+    src/GameLogic.cpp \
+    src/AsyncCalc.cpp
+
+HEADERS += \
+    src/GameLogic.h \
+    src/AsyncCalc.h
 
 RESOURCES += qml.qrc
 
-# Additional import path used to resolve QML modules in Qt Creator's code model
-QML_IMPORT_PATH =
-
-# Default rules for deployment.
-include(deployment.pri)
-
-HEADERS += \
-    GameLogic.h \
-    AsyncCalc.h
 
 DISTFILES += \
-    android-build/AndroidManifest.xml
+    android/AndroidManifest.xml
+
+ANDROID_PACKAGE_SOURCE_DIR = $$PWD/android

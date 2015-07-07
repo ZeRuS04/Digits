@@ -216,7 +216,7 @@ To go to the menu, press  \"Menu\".",
                 id: mLay
                 anchors.fill: parent
                 anchors.margins: 7
-                Button{
+                GButton{
                     id: menu
                     width: height
                     Layout.fillHeight: true
@@ -224,7 +224,7 @@ To go to the menu, press  \"Menu\".",
                     onClicked: mainLoader.source = "MainMenu.qml"
                 }
             }
-            Button{
+            GButton{
                 anchors.right: mLay.right
                 anchors.top: mLay.top
                 id: restart
@@ -255,7 +255,7 @@ To go to the menu, press  \"Menu\".",
             anchors.margins: 7
             width: parent.width
             height: mainRect.height/10
-            Button{
+            GButton{
                 id: undoButton
                 Layout.fillWidth: true
                 Layout.fillHeight: true
@@ -282,7 +282,7 @@ To go to the menu, press  \"Menu\".",
                     }
                 }
             }
-            Button{
+            GButton{
                 id: nextStepButton
                 Layout.fillWidth: true
                 Layout.fillHeight: true
