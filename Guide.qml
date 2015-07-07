@@ -11,24 +11,24 @@ Rectangle {
     property int stepNumber: 0
     property var steps: [[],[1, 10], [8,17], [0, 2], [-1], [-2], [-3]]
     property var text: [
-        "Приветствую Вас в игре DIGITS! \n
-Это старая советская головоломка. Её правила очень просты. \n
-Коснитесь здесь, чтобы продолжить",
-        "Вы должны сократить все цифры(в классическом варианте). \n
-Сокращать можно одинаковые цифры, стоящие рядом. \n
-Попробуйте.",
-        "Также можно сокращать цифры, которые в сумме дают 10. \n
-Попробуйте.",
-        "Кроме того, если цифры не рядом, но между ними нет других цифр, их тоже можно сократить. \n
-Попробуйте.",
-        "Когда кончились все варианты сокращений(или если Вы не хотите сокращать),\n
-вы можете нажать на кнопку \"Next step\".\n
-Попробуйте.",
-        "Если Вы сделали ошибку, Вы можете отменить свое последнее действие.\n
-Для этого нажмите на кнопку \"Undo\".\n
-Попробуйте.",
-        "Чтобы начать новую игру, нажмите на кнопку \"Restart\".\n
-Чтобы выйти в меню, нажмите на кнопку  \"Menu\".",
+        "Welcome to DIGITS! \n
+It is old puzzle game. Rules are pretty simple. \n
+Touch here to continue",
+        "In the classic version, You must cancel all the digits \n
+Only similar digits standing by each other are allowed to be canceled. \n
+Give it a try.",
+        "Also, it is possible to cancel digits with a sum of 10. \n
+Give it a try.",
+        "Besides, if digits are not near, but there are no other digits between, You can cancel those as well. \n
+Give it a try.",
+        "When all variants are depleted or You just don't want to cancel,\n
+You can press \"Next step\".\n
+Give it a try.",
+        "If You made a mistake, you can undo previous action.\n
+To do it, press \"Undo\".\n
+Give it a try.",
+        "To start a new game, press \"Restart\".\n
+To go to the menu, press  \"Menu\".",
         ""
     ]
     property var cells: []
