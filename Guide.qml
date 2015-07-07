@@ -9,7 +9,7 @@ Rectangle {
     property var startNums: [1,1,1,2,1,3,1,4,1,5,1,6,1,7,1,8,1,9]
     property var pair: [];
     property int stepNumber: 0
-    property var steps: [[],[1, 10], [8,17], [0, 2]]
+    property var steps: [[],[1, 10], [8,17], [0, 2], [-1], [-2], [-3]]
     property var text: [
         "Приветствую вас в игре DIGITS! \n
 Это старая советская головоломка. Её правила очень просты. \n
@@ -20,7 +20,16 @@ Rectangle {
         "Так же можно сокращать цифры, которые в сумме дают 10. \n
 Попробуйте.",
         "Кроме того, если цифры не рядом, но между ними нет других цифр их тоже можно сократить. \n
-Попробуйте."
+Попробуйте.",
+        "Когда кончились все варианты сокращений(или если вы не хотите сокращать)\n
+вы можете нажать на кнопку \"Next step\".\n
+Попробуйте.",
+        "Если вы сделали ошибку, вы можете отменить свое последнее действие\n
+для этого нажмите на кнопку \"Undo\".\n
+Попробуйте.",
+        "Что бы начать новую игру нажмите на кнопку \"Restart\".\n
+Что бы выйти в меню нажмите на кнопку  \"Menu\".",
+        ""
     ]
     property var cells: []
 
@@ -31,9 +40,18 @@ Rectangle {
               */
             mainLoader.source = "GameModesMenu.qml"
         }else{
-            for(var i = 0; i < steps[mainRect.stepNumber].length; i++){
-                cells[steps[mainRect.stepNumber][i]].block = false;
-                cells[steps[mainRect.stepNumber][i]].maVis = true;
+            if(steps[mainRect.stepNumber][0] < 0){
+                if(steps[mainRect.stepNumber][0] === -1)
+                    nsBlock.visible = false;
+                if(steps[mainRect.stepNumber][0] === -2)
+                    undoBlock.visible = false;
+                if(steps[mainRect.stepNumber][0] === -3)
+                    restartBlock.visible = false;
+            }else{
+                for(var i = 0; i < steps[mainRect.stepNumber].length; i++){
+                    cells[steps[mainRect.stepNumber][i]].block = false;
+                    cells[steps[mainRect.stepNumber][i]].maVis = true;
+                }
             }
         }
     }
@@ -41,7 +59,7 @@ Rectangle {
     Rectangle{
 
         id: statRow
-        anchors.top: parent.top
+//        anchors.top: parent.top
         width: parent.width
         height: mainRect.height/10
         color: mainRect.color
@@ -84,7 +102,7 @@ Rectangle {
                 spacing: mainRect.width/10/9
                 Repeater{
                     id: rep
-                    model: 18
+                    model: startNums.length
 
                     delegate: Cell{
                         id: rect
@@ -99,13 +117,6 @@ Rectangle {
 
                         n: mainRect.startNums[index];
 
-                        Connections{
-                            target: logic
-                            onNumsChanged: {
-                                rect.n = logic.getNum(index);
-                                rect.state = (n == 0 ? "Delete" : "Default")
-                            }
-                        }
                         Rectangle{
                             id: cellBlock
                             anchors.fill: parent
@@ -128,8 +139,12 @@ Rectangle {
                                             rect.state = "Default";
                                             pair.length = 0;
                                         }else{
+                                            startNums[pair[0].i] = 0;
                                             pair[0].state = "Delete"
+                                            pair[0].block = true;
+                                            startNums[rect.i] = 0;
                                             rect.state = "Delete";
+                                            rect.block = true;
                                             pair.length = 0;
                                             stepNumber++;
                                             nextStep();
@@ -151,6 +166,8 @@ Rectangle {
                             {
                                 rect.maVis = true
                             }
+                            if(n === 0)
+                                state = "Delete"
                         }
                     }
                     Component.onCompleted: {
@@ -199,11 +216,35 @@ Rectangle {
                 anchors.fill: parent
                 Button{
                     anchors.margins: 10
-                    id: mainMenu2
+                    id: menu
                     width: height
                     Layout.fillHeight: true
                     text: "Menu"
                     onClicked: mainLoader.source = "MainMenu.qml"
+                }
+            }
+            Button{
+                anchors.right: statRow2.right
+                anchors.top: statRow2.top
+                id: restart
+                width: menu.width
+                height: menu.height
+                text: "Restart"
+                onClicked: {
+                    logic.restart();
+                    mainLoader.source = "Game.qml"
+                }
+
+                Rectangle{
+                    id: restartBlock
+                    anchors.fill: parent
+                    visible: parent.block
+                    color: Qt.rgba(0,0,0,0.5);
+                    MouseArea{
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        onClicked: {}
+                    }
                 }
             }
         }
@@ -217,9 +258,27 @@ Rectangle {
                 Layout.fillWidth: true
                 Layout.fillHeight: true
                 text: "Undo"
-//                onClicked: logic.undo();
+                onClicked: {
+                    startNums.length = 0;
+                    startNums.push(0,0,0,2,1,3,1,4,0,5,0,6,1,7,1,8,1,0);
+                    cells.length = 0;
+                    rep.model = startNums.length;
+                    stepNumber++;
+                    nextStep();
+                    undoBlock.visible = true
+                }
 
-
+                Rectangle{
+                    id: undoBlock
+                    anchors.fill: parent
+                    visible: parent.block
+                    color: Qt.rgba(0,0,0,0.5);
+                    MouseArea{
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        onClicked: {}
+                    }
+                }
             }
             Button{
                 id: nextStepButton
@@ -228,19 +287,27 @@ Rectangle {
                 text: "Next step"
                 property bool isActive: true
                 onClicked:{
-//                    if(isActive){
-//                        isActive = false;
-//                        timer.start();
-//                        logic.nextStep();
-//                    }
+                    mainRect.startNums.push(2,1,3,1,4,5,6,1,7,1,8);
+                    cells.length = 0;
+                    rep.model = startNums.length;
+                    stepNumber++;
+                    nextStep();
+
+                    nsBlock.visible = true;
+
                 }
-                Timer{
-                    id: timer
-                    interval: 500
-                    repeat: false
-                    running: false
-                    onTriggered: parent.isActive = true
+                Rectangle{
+                    id: nsBlock
+                    anchors.fill: parent
+                    visible: parent.block
+                    color: Qt.rgba(0,0,0,0.5);
+                    MouseArea{
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        onClicked: {}
+                    }
                 }
+
             }
         }
 

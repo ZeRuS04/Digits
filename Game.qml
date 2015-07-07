@@ -116,7 +116,7 @@ Rectangle {
 
         RowLayout{
             anchors.fill: parent
-            Button{
+            GButton{
                 anchors.margins: 10
                 id: mainMenu
                 width: height
@@ -174,7 +174,7 @@ Rectangle {
                     text: logic.secToString(logic.time)
                 }
             }
-            Button{
+            GButton{
                 id: restartButton
                 anchors.margins: 10
                 width: height
@@ -192,7 +192,7 @@ Rectangle {
         anchors.bottom: parent.bottom
         width: parent.width
         height: mainRect.height/10
-        Button{
+        GButton{
             id: undoButton
             Layout.fillWidth: true
             Layout.fillHeight: true
@@ -201,7 +201,7 @@ Rectangle {
 
 
         }
-        Button{
+        GButton{
             id: nextStepButton
             Layout.fillWidth: true
             Layout.fillHeight: true
