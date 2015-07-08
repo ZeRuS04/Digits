@@ -16,17 +16,17 @@ Es ist ein altes Puzzle, das sehr einfache Regeln hat. \n
 Tippen hier für die Forzetzung.",
         "Sie müssen alle Zahlen reduzieren (in der klassischen Version). \n
 Man kann gleiche Zahlen reduzieren, die in der Nähe finden sind. \n
-Versuchen.",
+Versuchen Sie.",
         "Auch kann man die Zahlen reduzieren, deren Summe gleich 10 ist. \n
-Versuchen.",
+Versuchen Sie.",
         "Wenn zwischen zwei Zahlen andere Zahlen fehlen, können Sie diese Zahlen reduzieren, obwohl sie nicht in der Nähe sind. \n
-Versuchen.",
+Versuchen Sie.",
         "Wenn die Reduzierungsoptionen fehlen (oder Sie wollen nicht reduzieren),\n
 können Sie tippen \"Next step\".\n
-Versuchen.",
+Versuchen Sie.",
         "Wenn Sie eine Fehler machen, können Sie seine letzte Wirkung abschaffen.\n
 Für die Abschaffung tippen \"Undo\".\n
-Versuchen.",
+Versuchen Sie.",
         "Wenn Sie neues Spiel beginnen wollen, tippen \"Restart\".\n
 Wenn Sie ins Menu gehen wollen, tippen \"Menu\".",
         ""
