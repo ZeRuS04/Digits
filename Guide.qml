@@ -12,19 +12,19 @@ Rectangle {
     property var steps: [[],[1, 10], [8,17], [0, 2], [-1], [-2], [-3]]
     property var text: [
         "Welcome to DIGITS! \n
-It is old puzzle game. Rules are pretty simple. \n
+It is an old puzzle game. Rules are pretty simple. \n
 Touch here to continue",
         "In the classic version, You must cancel all the digits \n
 Only similar digits standing by each other are allowed to be canceled. \n
 Give it a try.",
         "Also, it is possible to cancel digits with a sum of 10. \n
 Give it a try.",
-        "Besides, if digits are not near, but there are no other digits between, You can cancel those as well. \n
+        "Besides, if digits are not close to you, but there are no other digits between, You can cancel those as well. \n
 Give it a try.",
         "When all variants are depleted or You just don't want to cancel,\n
 You can press \"Next step\".\n
 Give it a try.",
-        "If You made a mistake, you can undo previous action.\n
+        "If You have made a mistake, you can undo previous action.\n
 To do it, press \"Undo\".\n
 Give it a try.",
         "To start a new game, press \"Restart\".\n
