@@ -22,7 +22,7 @@ Give it a try.",
         "Besides, if digits are not alongside, but there are no other digits between, You can cancel those as well. \n
 Give it a try.",
         "When all variants are depleted or You just don't want to cancel,\n
-You can press \"Next step\".\n
+You can press \"Next step\". All remaining digits will be duplicated.\n
 Give it a try.",
         "If You have made a mistake, you can undo previous action.\n
 To do it, press \"Undo\".\n
