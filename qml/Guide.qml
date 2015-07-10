@@ -19,7 +19,7 @@ Only similar digits standing by each other are allowed to be canceled. \n
 Give it a try.",
         "Also, it is possible to cancel digits with a sum of 10. \n
 Give it a try.",
-        "Besides, if digits are not close to you, but there are no other digits between, You can cancel those as well. \n
+        "Besides, if digits are not alongside, but there are no other digits between, You can cancel those as well. \n
 Give it a try.",
         "When all variants are depleted or You just don't want to cancel,\n
 You can press \"Next step\".\n
