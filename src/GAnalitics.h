@@ -59,7 +59,7 @@
  */
 
 #ifndef GANALYTICS_DEBUG
-#define GANALYTICS_DEBUG 2
+#define GANALYTICS_DEBUG 0
 #endif
 
 class GAnalytics : public QObject {
