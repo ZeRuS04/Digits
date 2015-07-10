@@ -3,8 +3,11 @@
 
 #include <QObject>
 #include <QSettings>
+#include <QCoreApplication>
 #include "AsyncCalc.h"
-#define		APP_NAME	"DIGITS"
+#include "GAnalitics.h"
+
+#define		APP_NAME	"Digits"
 #define		ORG_NAME    QT_TR_NOOP("Eugeniy Sinelshchikov")
 #define		ORG_DOMAIN	"zerus04@gmail.com"
 
@@ -28,6 +31,7 @@ struct Pair{
 };
 
 
+
 class GameLogic : public QObject
 {
     Q_OBJECT
@@ -45,10 +49,13 @@ class GameLogic : public QObject
     int *checkedCell_1;
 
     QSettings m_settings;
+    GAnalytics *m_analytics;
+
 
 
 public:
     explicit GameLogic(QObject *parent = 0);
+    ~GameLogic();
     Q_PROPERTY(int time READ time WRITE setTime NOTIFY timeChanged)
     Q_PROPERTY(int score READ score WRITE setScore NOTIFY scoreChanged)
     Q_PROPERTY(int steps READ steps WRITE setSteps NOTIFY stepsChanged)
@@ -65,7 +72,7 @@ public:
     Q_INVOKABLE void    restart();
     Q_INVOKABLE void    undo();
     Q_INVOKABLE bool    haveSaves();
-
+    Q_INVOKABLE void    openQmlPage(QString namePage);
 
     Q_INVOKABLE QString appName();
     Q_INVOKABLE QString appVersion();
@@ -97,6 +104,7 @@ public slots:
 
 private:
     void initialize();
+
 };
 
 #endif // GAMELOGIC_H

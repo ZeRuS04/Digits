@@ -10,7 +10,7 @@ void AsyncCalc::run()
     case I_TO_S:
         listIntToString();
         break;
-    case NEXT_STEP:
+    case N_STEP:
         nextStep();
         break;
     default:
@@ -43,13 +43,12 @@ void AsyncCalc::nextStepStart(QList<int> *arg1, QList<int> *arg2)
 {
     b_nums = arg1;
     m_nums = arg2;
-    param_ = NEXT_STEP;
+    param_ = N_STEP;
     start();
 }
 
 void AsyncCalc::nextStep()
 {
-    int k = 0;
     *b_nums = *m_nums;
 //    int count = m_nums->length();
     for(int k = 0; k < m_nums->length(); k+=9){

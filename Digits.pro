@@ -1,6 +1,6 @@
 TEMPLATE = app
 
-QT += qml quick widgets
+QT += qml quick widgets network
 
 SOURCES += src/main.cpp \
     src/GameLogic.cpp \
@@ -8,7 +8,8 @@ SOURCES += src/main.cpp \
 
 HEADERS += \
     src/GameLogic.h \
-    src/AsyncCalc.h
+    src/AsyncCalc.h \
+    src/GAnalitics.h
 
 RESOURCES += qml.qrc
 

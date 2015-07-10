@@ -44,7 +44,9 @@ ApplicationWindow {
     Loader{
         id:mainLoader
         anchors.fill: parent;
-
+        onLoaded: {
+            logic.openQmlPage(source);
+        }
     }
     Connections{
         target: logic

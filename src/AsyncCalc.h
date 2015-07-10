@@ -6,7 +6,7 @@
 
 #define I_TO_S      (1)
 #define S_TO_I      (2)
-#define NEXT_STEP   (3)
+#define N_STEP      (3)
 class AsyncCalc : public QThread
 {
     Q_OBJECT

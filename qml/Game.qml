@@ -123,7 +123,9 @@ Rectangle {
                 width: height
                 Layout.fillHeight: true
                 text: qsTr("Menu")
-                onClicked: mainLoader.source = "MainMenu.qml"
+                onClicked: {
+                    mainLoader.source = "MainMenu.qml"
+                }
             }
             ColumnLayout{
 

@@ -1,16 +1,21 @@
 #include "GameLogic.h"
 
 
-
-QString version_info = G_VERSION("6");
+extern QCoreApplication *coreApp;
 
 GameLogic::GameLogic(QObject *parent) :
     QObject(parent),
-    m_settings(this),
     m_state(NO_CHECKED),
-    m_lastAction(NO_ACTION)
+    m_lastAction(NO_ACTION),
+    m_settings(this),
+    m_analytics(new GAnalytics(coreApp, "UA-64996589-1"))
 {
     initialize();
+}
+
+GameLogic::~GameLogic()
+{
+    m_analytics->endSession();
 }
 
 void GameLogic::saveNumsList()
@@ -100,7 +105,6 @@ bool GameLogic::checkPair(int pos1, int pos2)
 
 void GameLogic::nextStep()
 {
-    int k = 0;
     m_lastAction = NEXT_STEP;
     b_nums = m_nums;
 
@@ -112,6 +116,7 @@ void GameLogic::nextStep()
 
 void GameLogic::restart()
 {
+    m_analytics->sendAppview(QCoreApplication::applicationName(), QCoreApplication::applicationVersion(), "New Game");
     m_lastAction = NO_ACTION;
     m_nums.clear();
     m_nums.append(1);    m_nums.append(1);    m_nums.append(1);    m_nums.append(2);
@@ -174,24 +179,29 @@ bool GameLogic::haveSaves()
         return false;
 }
 
+void GameLogic::openQmlPage(QString namePage)
+{
+    m_analytics->sendAppview(QCoreApplication::applicationName(), QCoreApplication::applicationVersion(), namePage);
+}
+
 QString GameLogic::appName()
 {
-    return APP_NAME;
+    return QCoreApplication::applicationName();
 }
 
 QString GameLogic::appVersion()
 {
-    return version_info;
+    return QCoreApplication::applicationVersion();
 }
 
 QString GameLogic::appMail()
 {
-    return ORG_DOMAIN;
+    return QCoreApplication::organizationDomain();
 }
 
 QString GameLogic::appAuthor()
 {
-    return ORG_NAME;
+    return QCoreApplication::organizationName();
 }
 
 int GameLogic::time() const
@@ -278,6 +288,9 @@ void GameLogic::nextStepSlot()
 
 void GameLogic::initialize()
 {
+    m_analytics->generateUserAgentEtc();
+
+    m_analytics->setAppName(QCoreApplication::applicationName());
 
     connect(&m_calc, SIGNAL(listIntToStringSig(QStringList)), this, SLOT(saveNums(QStringList)));
     connect(&m_calc, SIGNAL(listStringToIntSig(QList<int>)), this, SLOT(loadNums(QList<int>)));
