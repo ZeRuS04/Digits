@@ -85,6 +85,8 @@ public:
     int numsCount() const;
     int state() const;
 
+    void loadNums();
+    void saveNums();
 signals:
     void timeChanged();
     void numsChanged();
@@ -98,8 +100,6 @@ public slots:
     void setSteps(int arg);
     void setScore(int arg);
     void setState(int arg);
-    void loadNums(QList<int> retVal);
-    void saveNums(QStringList retVal);
     void nextStepSlot();
 
 private:

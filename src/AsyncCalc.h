@@ -14,18 +14,12 @@ class AsyncCalc : public QThread
     void run();
 public:
     explicit AsyncCalc(QObject *parent = 0);
-    void listStringToIntStart(QStringList arg);
-    void listIntToStringStart(QList<int> arg);
     void nextStepStart(QList<int> *arg1, QList<int> *arg2);
 signals:
-    void listStringToIntSig(QList<int> retVal);
-    void listIntToStringSig(QStringList retVal);
     void nextStepSig();
 public slots:
 
 private:
-    void listStringToInt();
-    void listIntToString();
     void nextStep();
 
     QList<int> arg_i;

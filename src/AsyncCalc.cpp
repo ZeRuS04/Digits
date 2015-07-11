@@ -4,12 +4,6 @@
 void AsyncCalc::run()
 {
     switch (param_) {
-    case S_TO_I:
-        listStringToInt();
-        break;
-    case I_TO_S:
-        listIntToString();
-        break;
     case N_STEP:
         nextStep();
         break;
@@ -23,20 +17,6 @@ AsyncCalc::AsyncCalc(QObject *parent) :
     QThread(parent),
     param_(0)
 {
-}
-
-void AsyncCalc::listStringToIntStart(QStringList arg)
-{
-    arg_s = arg;
-    param_ = S_TO_I;
-    start();
-}
-
-void AsyncCalc::listIntToStringStart(QList<int> arg)
-{
-    arg_i = arg;
-    param_ = I_TO_S;
-    start();
 }
 
 void AsyncCalc::nextStepStart(QList<int> *arg1, QList<int> *arg2)
@@ -80,23 +60,3 @@ void AsyncCalc::nextStep()
     emit nextStepSig();
 }
 
-void AsyncCalc::listStringToInt()
-{
-    QList<int> retList;
-    foreach(QString str, arg_s){
-        retList.append(str.toInt());
-    }
-    emit listStringToIntSig(retList);
-    return;
-}
-
-void AsyncCalc::listIntToString()
-{
-    QStringList retList;
-    foreach(int i, arg_i){
-        retList.append(QString("").setNum(i));
-    }
-
-    emit listIntToStringSig(retList);
-    return;
-}

@@ -20,7 +20,7 @@ GameLogic::~GameLogic()
 
 void GameLogic::saveNumsList()
 {
-    m_calc.listIntToStringStart(m_nums);
+    saveNums();
 }
 
 void GameLogic::checkCell(int pos)
@@ -146,7 +146,7 @@ void GameLogic::undo()
         b_nums.clear();
         setSteps(m_steps-1);
 
-        m_calc.listIntToStringStart(m_nums);
+        saveNums();
 
         break;
     case DEL_NUMS:
@@ -156,7 +156,7 @@ void GameLogic::undo()
         b_pairs.clear();
         m_score -= SCORE_CONSTANT;
         m_settings.setValue("Score", m_score);
-        m_calc.listIntToStringStart(m_nums);
+        saveNums();
 //        m_settings.setValue("NumsList", listIntToString(m_nums));
         emit scoreChanged();
         break;
@@ -170,10 +170,10 @@ void GameLogic::undo()
 
 bool GameLogic::haveSaves()
 {
-    if(m_settings.contains("NumsList")  ||
-       m_settings.contains("Time")      ||
+    if(m_settings.contains("Time")      ||
        m_settings.contains("Steps")     ||
-       m_settings.contains("Score"))
+       m_settings.contains("Score")     ||
+       m_settings.contains("NumList"))
         return true;
     else
         return false;
@@ -265,15 +265,28 @@ void GameLogic::setState(int arg)
     }
 }
 
-void GameLogic::loadNums(QList<int> retVal)
+void GameLogic::loadNums()
 {
-    m_nums = retVal;
+    int size = m_settings.beginReadArray("Nums");
+    m_nums.clear();
+    m_nums.reserve(size);
+    for (int i = 0; i < size; ++i) {
+        m_settings.setArrayIndex(i);
+        m_nums.append(m_settings.value("digit").toInt());
+    }
     emit numsChanged();
 }
 
-void GameLogic::saveNums(QStringList retVal)
+void GameLogic::saveNums()
 {
-    m_settings.setValue("NumsList", retVal);
+//    m_settings.set
+    m_settings.setValue("NumList", 0);
+    m_settings.beginWriteArray("Nums");
+    for(int i = 0; i < m_nums.size(); i++){
+        m_settings.setArrayIndex(i);
+        m_settings.setValue("digit", m_nums.at(i));
+    }
+    m_settings.endArray();
 }
 
 void GameLogic::nextStepSlot()
@@ -282,7 +295,7 @@ void GameLogic::nextStepSlot()
         emit endGame();
         return;
     }
-    saveNumsList();
+    saveNums();
     emit numsChanged();
 }
 
@@ -292,8 +305,8 @@ void GameLogic::initialize()
 
     m_analytics->setAppName(QCoreApplication::applicationName());
 
-    connect(&m_calc, SIGNAL(listIntToStringSig(QStringList)), this, SLOT(saveNums(QStringList)));
-    connect(&m_calc, SIGNAL(listStringToIntSig(QList<int>)), this, SLOT(loadNums(QList<int>)));
+//    connect(&m_calc, SIGNAL(listIntToStringSig(QStringList)), this, SLOT(saveNums(QStringList)));
+//    connect(&m_calc, SIGNAL(listStringToIntSig(QList<int>)), this, SLOT(loadNums(QList<int>)));
     connect(&m_calc, SIGNAL(nextStepSig()), this, SLOT(nextStepSlot()));
 
     m_time = m_settings.value("Time", 0).toInt();
@@ -302,8 +315,9 @@ void GameLogic::initialize()
     /*
      * TODO: Поменять на нормальный список.
      * */
-    if(m_settings.contains("NumsList")){
-        m_calc.listStringToIntStart(m_settings.value("NumsList").toStringList());
+    if(m_settings.contains("NumList")){
+        loadNums();
+        saveNums();
     }
     else{
         m_nums.append(1);    m_nums.append(1);    m_nums.append(1);    m_nums.append(2);
