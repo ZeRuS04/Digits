@@ -1,11 +1,13 @@
 import QtQuick 2.3
 import QtQuick.Controls 1.2
 import QtQuick.Layouts 1.1
+import QtQuick.Window 2.1
 
 Rectangle {
     id: mainRect
     anchors.fill: parent
     color: "#fdf9f0";
+    property bool isPortrait: Screen.primaryOrientation === Qt.PortraitOrientation
     property int score_constant:10
     property var pair: [];
 
@@ -16,9 +18,9 @@ Rectangle {
         }
     }
 
-    Flickable{
-
-        anchors.margins: 3
+    GridView{
+        id: grid
+        anchors.margins: mainRect.width/10/11
         anchors{
 //            fill: parent
             top: statRow.bottom
@@ -26,76 +28,79 @@ Rectangle {
             left: parent.left
             bottom: btnRow.top
         }
-        flickableDirection: Flickable.VerticalFlick
+        cellHeight: mainRect.width/10+mainRect.width/10/12
+        cellWidth: mainRect.width/10+mainRect.width/10/12
+        property var prevRatio: 0
+        delegate: Cell{
+            id: rect
+            width: mainRect.width/10
+            height: mainRect.width/10
+            property int row: index/9
+            property int column: index%9
+            property int i: index
+            state: n == 0 ? "Delete" : "Default"
+            n: logic.getNum(index);
+            Connections{
+                target: logic
+                onNumsChanged: {
+                    rect.n = logic.getNum(index);
+                    rect.state = (n == 0 ? "Delete" : "Default")
+                }
+            }
 
-        Grid{
-            id: grid
-            columns: 9
-            spacing: mainRect.width/10/9
-            Repeater{
-                id: rep
-                model: logic.numsCount
-
-                delegate: Cell{
-                    id: rect
-                    width: mainRect.width/10
-                    height: mainRect.width/10
-                    property int row: index/9
-                    property int column: index%9
-                    property int i: index
-                    state: n == 0 ? "Delete" : "Default"
-//                    property bool vis: modelData == 0 ? false : true;
-                    n: logic.getNum(index);
-
-                    Connections{
-                        target: logic
-                        onNumsChanged: {
-                            rect.n = logic.getNum(index);
-                            rect.state = (n == 0 ? "Delete" : "Default")
-                        }
-                    }
-
-                    MouseArea{
-                        anchors.fill: parent
-                        hoverEnabled: true
-                        onEntered: parent.border.width = 2
-                        onExited: parent.border.width = 1
-                        onClicked:{
-                            if((rect.state == "Default") || (rect.state == "Check")){
-                                if(logic.state == 1){
-                                        if(logic.checkPair(pair[0].i, rect.i)){
-                                            logic.numToNull(pair[0].i);
-                                            logic.numToNull(rect.i)
-                                            logic.saveNumsList();
-                                            pair[0].state = "Delete"
-                                            rect.state = "Delete";
-                                            mainRect.pair.length = 0;
-                                            logic.state = 0;
-                                            logic.score += mainRect.score_constant;
+            MouseArea{
+                anchors.fill: parent
+                hoverEnabled: true
+                onEntered: parent.border.width = 2
+                onExited: parent.border.width = 1
+                onClicked:{
+                    if((rect.state == "Default") || (rect.state == "Check")){
+                        if(logic.state == 1){
+                                if(logic.checkPair(pair[0].i, rect.i)){
+                                    logic.numToNull(pair[0].i);
+                                    logic.numToNull(rect.i)
+                                    logic.saveNumsList();
+                                    pair[0].state = "Delete"
+                                    rect.state = "Delete";
+                                    mainRect.pair.length = 0;
+                                    logic.state = 0;
+                                    logic.score += mainRect.score_constant;
 //                                            settings.setValue("Score", mainRect.score);
 
-                                        }else{
-                                            pair[0].state = "Default";
-                                            rect.state = "Default";
-                                            mainRect.pair.length = 0;
-                                            logic.state = 0;
-                                        }
-                                }else
-                                {
-                                    rect.state = "Check";
-                                    logic.checkCell(rect.i);
-                                    pair.push( rect );
+                                }else{
+                                    pair[0].state = "Default";
+                                    rect.state = "Default";
+                                    mainRect.pair.length = 0;
+                                    logic.state = 0;
                                 }
-//                                settings.setValue("NumArray", mainRect.nums);
-                            }
+                        }else
+                        {
+                            rect.state = "Check";
+                            logic.checkCell(rect.i);
+                            pair.push( rect );
                         }
+//                                settings.setValue("NumArray", mainRect.nums);
                     }
                 }
             }
         }
-        contentHeight: grid.height
-        contentWidth: grid.width
+        model: logic.numsCount
+        onModelChanged: {
+            contentY = prevRatio;
+        }
+
+
     }
+    ScrollBar {
+        id: gridScrollBar
+//        orientation: isPortrait ? Qt.Horizontal : Qt.Vertical
+        height: /*isPortrait ? 8 : */grid.height;
+        width: /*isPortrait ? grid.width :*/ 8
+        scrollArea: grid;
+        anchors.top: grid.top
+        anchors.right: grid.right
+    }
+
 
     Rectangle{
 
@@ -217,6 +222,7 @@ Rectangle {
                 if(isActive){
                     isActive = false;
                     timer.start();
+                    grid.prevRatio = grid.contentY;
                     logic.nextStep();
                 }
             }

@@ -13,6 +13,7 @@ HEADERS += \
 
 RESOURCES += qml.qrc
 
+QMAKE_CXXFLAGS += -std=gnu++11
 
 DISTFILES += \
     android/AndroidManifest.xml

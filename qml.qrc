@@ -16,5 +16,6 @@
         <file>qml/Guide.qml</file>
         <file>qml/GButton.qml</file>
         <file>qml/About.qml</file>
+        <file>qml/ScrollBar.qml</file>
     </qresource>
 </RCC>

@@ -46,7 +46,7 @@ void GameLogic::numToNull(int i)
     m_lastAction = DEL_NUMS;
     if(b_pairs.length() == 2)
         b_pairs.clear();
-    Pair p;
+    Cell p;
     p.pos = i;
     p.value = m_nums.at(i);
     b_pairs.append(p);
@@ -150,7 +150,7 @@ void GameLogic::undo()
 
         break;
     case DEL_NUMS:
-        foreach (Pair p, b_pairs) {
+        foreach (Cell p, b_pairs) {
             m_nums.replace(p.pos, p.value);
         }
         b_pairs.clear();
@@ -312,9 +312,7 @@ void GameLogic::initialize()
     m_time = m_settings.value("Time", 0).toInt();
     m_steps = m_settings.value("Steps", 0).toInt();
     m_score = m_settings.value("Score", 0).toInt();
-    /*
-     * TODO: Поменять на нормальный список.
-     * */
+
     if(m_settings.contains("NumList")){
         loadNums();
         saveNums();

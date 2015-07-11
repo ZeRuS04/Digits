@@ -25,10 +25,11 @@
 
 #define SCORE_CONSTANT      (10)
 
-struct Pair{
+struct Cell{
     int pos;
     int value;
 };
+
 
 
 
@@ -37,9 +38,11 @@ class GameLogic : public QObject
     Q_OBJECT
     int m_time;
     QList<int> m_nums;
+//    QList<QList<int> > m_nums;
 
     QList<int> b_nums;
-    QList<Pair> b_pairs;
+//    QList<QList<int> > b_nums;
+    QList<Cell> b_pairs;
     AsyncCalc m_calc;
     int m_steps;
     int m_score;
@@ -63,6 +66,8 @@ public:
     Q_PROPERTY(int numsCount READ numsCount NOTIFY numsChanged)
     Q_PROPERTY(int state READ state WRITE setState NOTIFY stateChanged)
 
+
+//    Q_INVOKABLE QList<int>     line(int i);
     Q_INVOKABLE void    saveNumsList();
     Q_INVOKABLE void    checkCell(int pos);
     Q_INVOKABLE int     getNum(int i);
@@ -71,6 +76,8 @@ public:
     Q_INVOKABLE void    nextStep();
     Q_INVOKABLE void    restart();
     Q_INVOKABLE void    undo();
+
+
     Q_INVOKABLE bool    haveSaves();
     Q_INVOKABLE void    openQmlPage(QString namePage);
 
