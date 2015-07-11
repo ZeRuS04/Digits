@@ -162,10 +162,6 @@ To go to the menu, press  \"Menu\".",
 
                         Component.onCompleted: {
                             mainRect.cells.push(rect);
-                            if((index == 1) || (index == 10))
-                            {
-                                rect.maVis = true
-                            }
                             if(n === 0)
                                 state = "Delete"
                         }
@@ -289,7 +285,7 @@ To go to the menu, press  \"Menu\".",
                 text: qsTr("Next step")
                 property bool isActive: true
                 onClicked:{
-                    mainRect.startNums.push(2,1,3,1,4,5,6,1,7,1,8);
+                    mainRect.startNums.push(2,1,3,1,4,5,6,1,7,1,8,1);
                     cells.length = 0;
                     rep.model = startNums.length;
                     stepNumber++;
