@@ -46,6 +46,23 @@ Rectangle {
                     rect.n = logic.getNum(index);
                     rect.state = (n == 0 ? "Delete" : "Default")
                 }
+                onHaveSolution: {
+                    if((rect.i === pos1) || (rect.i === pos2)){
+                        cellTimer.prevState = rect.state;
+                        cellTimer.start()
+                        rect.state = "Highlighted";
+                    }
+                }
+
+            }
+
+            Timer{
+                id: cellTimer
+                interval: 1500
+                repeat: false
+                running: false
+                property var prevState: "Default"
+                onTriggered: rect.state = prevState
             }
 
             MouseArea{
@@ -62,6 +79,7 @@ Rectangle {
                                     logic.saveNumsList();
                                     pair[0].state = "Delete"
                                     rect.state = "Delete";
+                                    cellTimer.prevState = rect.state;
                                     mainRect.pair.length = 0;
                                     logic.state = 0;
                                     logic.score += mainRect.score_constant;
@@ -70,12 +88,14 @@ Rectangle {
                                 }else{
                                     pair[0].state = "Default";
                                     rect.state = "Default";
+                                    cellTimer.prevState = rect.state;
                                     mainRect.pair.length = 0;
                                     logic.state = 0;
                                 }
                         }else
                         {
                             rect.state = "Check";
+                            cellTimer.prevState = rect.state;
                             logic.checkCell(rect.i);
                             pair.push( rect );
                         }
@@ -87,6 +107,13 @@ Rectangle {
         model: logic.numsCount
         onModelChanged: {
             contentY = prevRatio;
+        }
+
+        Connections{
+            target: logic
+            onHaveSolution: {
+                grid.positionViewAtIndex(pos1, GridView.Center);
+            }
         }
 
 
@@ -210,6 +237,38 @@ Rectangle {
             onClicked: logic.undo();
 
 
+        }
+        Label{
+        }
+        GButton{
+            id: checkSolution
+            anchors.margins: 7
+//            Layout.fillWidth: true
+            Layout.fillHeight: true
+            text: qsTr("?")
+            onClicked:{
+                logic.score -= 5
+                logic.checkSolution();
+            }
+            Connections{
+                target: logic
+                onHaveNotSolution: {
+                    checkSolution.state = "Red"
+                    solTimer.start();
+
+                }
+                onHaveSolution: {
+                    checkSolution.state = "Green"
+                    solTimer.start();
+                }
+            }
+            Timer{
+                id: solTimer
+                interval: 1500
+                repeat: false
+                running: false
+                onTriggered: checkSolution.state = "Default"
+            }
         }
         GButton{
             id: nextStepButton

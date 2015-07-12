@@ -31,6 +31,11 @@ void GameLogic::checkCell(int pos)
     m_state = ONE_CELL_CHECKED;
 }
 
+void GameLogic::checkSolution()
+{
+    m_calc.checkSolutionStart(&m_nums);
+}
+
 int GameLogic::getNum(int i)
 {
     if(m_nums.length() <= i)
@@ -157,7 +162,6 @@ void GameLogic::undo()
         m_score -= SCORE_CONSTANT;
         m_settings.setValue("Score", m_score);
         saveNums();
-//        m_settings.setValue("NumsList", listIntToString(m_nums));
         emit scoreChanged();
         break;
     default:
@@ -305,9 +309,9 @@ void GameLogic::initialize()
 
     m_analytics->setAppName(QCoreApplication::applicationName());
 
-//    connect(&m_calc, SIGNAL(listIntToStringSig(QStringList)), this, SLOT(saveNums(QStringList)));
-//    connect(&m_calc, SIGNAL(listStringToIntSig(QList<int>)), this, SLOT(loadNums(QList<int>)));
-    connect(&m_calc, SIGNAL(nextStepSig()), this, SLOT(nextStepSlot()));
+    connect(&m_calc, &AsyncCalc::haveNotSolution, this, &GameLogic::haveNotSolution);
+    connect(&m_calc, &AsyncCalc::solutionSig, this, &GameLogic::haveSolution);
+    connect(&m_calc, &AsyncCalc::nextStepSig, this, &GameLogic::nextStepSlot);
 
     m_time = m_settings.value("Time", 0).toInt();
     m_steps = m_settings.value("Steps", 0).toInt();

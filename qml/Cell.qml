@@ -38,20 +38,19 @@ Rectangle {
                 text: rect.n
             }
         },
-//        State{
-//            name: "Select"
-//            when: ma.containsMouse
-//            PropertyChanges {
-//                target: rect
-//                color: "skyblue"
-//                border.width: 2
-//                radius: width/10
-//            }
-//            PropertyChanges {
-//                target: num
-//                text: rect.n
-//            }
-//        },
+        State{
+            name: "Highlighted"
+            PropertyChanges {
+                target: rect
+                color: "orange"
+                border.width: 2
+                radius: width/10
+            }
+            PropertyChanges {
+                target: num
+                text: rect.n
+            }
+        },
         State{
             name: "Check"
             PropertyChanges {

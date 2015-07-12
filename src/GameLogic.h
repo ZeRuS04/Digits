@@ -70,6 +70,7 @@ public:
 //    Q_INVOKABLE QList<int>     line(int i);
     Q_INVOKABLE void    saveNumsList();
     Q_INVOKABLE void    checkCell(int pos);
+    Q_INVOKABLE void    checkSolution();
     Q_INVOKABLE int     getNum(int i);
     Q_INVOKABLE void    numToNull(int i);
     Q_INVOKABLE bool    checkPair(int pos1, int pos2);
@@ -101,6 +102,9 @@ signals:
     void scoreChanged();
     void endGame();
     void stateChanged();
+
+    void haveSolution(int pos1, int pos2);
+    void haveNotSolution();
 
 public slots:
     void setTime(int arg);
