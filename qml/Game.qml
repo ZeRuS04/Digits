@@ -247,7 +247,6 @@ Rectangle {
             Layout.fillHeight: true
             text: qsTr("?")
             onClicked:{
-                logic.score -= 5
                 logic.checkSolution();
             }
             Connections{
@@ -259,6 +258,7 @@ Rectangle {
                 }
                 onHaveSolution: {
                     checkSolution.state = "Green"
+                    logic.score -= 5
                     solTimer.start();
                 }
             }
