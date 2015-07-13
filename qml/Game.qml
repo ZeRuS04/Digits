@@ -215,7 +215,10 @@ Rectangle {
                 width: height
                 Layout.fillHeight: true
                 text: qsTr("Restart")
-                onClicked: logic.restart()
+                onClicked: {
+                    logic.restart()
+                    grid.positionViewAtBeginning();
+                }
             }
         }
 
