@@ -17,5 +17,12 @@
         <file>qml/GButton.qml</file>
         <file>qml/About.qml</file>
         <file>qml/ScrollBar.qml</file>
+        <file>headerBorder.png</file>
+        <file>qml/MenuHeader.qml</file>
+        <file>res/Roboto-Bold.ttf</file>
+        <file>res/Roboto-LightItalic.ttf</file>
+        <file>res/Roboto-Regular.ttf</file>
+        <file>borderShadow.png</file>
+        <file>borderInShadow.png</file>
     </qresource>
 </RCC>

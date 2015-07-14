@@ -1,14 +1,17 @@
 import QtQuick 2.0
+import QtQuick 2.0
 
 Rectangle {
     id: rect
 
     property int n;
     property bool blocked: false
+    
+    property string text: "";
+    property bool disable: false
     property string upSideColor: "black"
     property string downSideColor: "white"
     property string downSidetextColor: "black"
-    property string downSidetext: ""
     property int duration: 500
     property string axis: "y"
     function rotate(){
@@ -141,75 +144,82 @@ Rectangle {
         }
     ]
 
-//    Text{
-//        id: num
-//        anchors.centerIn: parent
-//        font.pixelSize: rect.height/2
-//        text: rect.modelData == 0 ? "" : parent.n
-//    }
+}
 
-//    MouseArea{
-//        id: ma
-//        anchors.fill: parent
-//        hoverEnabled: true
+Rectangle {
+    id: btn
+    state: disable ? "Disable" : "Normal";
+    border.color: "#845a00";
+    property string text: "";
+    property bool disable: false
+    property color colorText: "black";
+    property color colorText_2: "white";
+    property int fntSize: 30
+    signal clicked();
+    Text{
+        id: buttonText
+        anchors.fill: parent;
+        text: parent.text;
+        horizontalAlignment: Text.AlignHCenter;
+        verticalAlignment: Text.AlignVCenter;
+        font.pixelSize: parent.fntSize;
+        font.family: "Arial"
+        font.bold: true
+        wrapMode: Text.WordWrap;
+    }
 
-//    }
+    states: [
+        State{
+            name: "Normal"
+            PropertyChanges {
+                target: btn;
+                color: "skyblue"
+                border.width: 1;
+                radius: 5;
+            }
+            PropertyChanges {
+                target: buttonText
+                color: parent.colorText;
+            }
+        },
+        State{
+                name: "Pressed"
+                PropertyChanges {
+                    target: btn;
+                    color: "lightgreen";
+                    border.width: 1;
+                    radius: 5;
+                }
+                PropertyChanges {
+                    target: buttonText
+                    color: parent.colorText;
+                }
+        },
+        State{
+                name: "Disable"
+                PropertyChanges {
+                    target: btn;
+                    color: "#6b6d6d";
+                    border.width: 0;
+                    radius: 0;
+                }
+                PropertyChanges {
+                    target: buttonText
+                    color: parent.colorText;
+                }
+        }
 
-//    state: "Default"
-//    states: [
-//        State{
-//            name: "Default"
-//            when: rect.n != 0
-//            PropertyChanges {
-//                target: rect
-//                color: "skyblue"
-//                border.width: 1
-//                radius: rect.width/10
-//            }
-//            PropertyChanges {
-//                target: num
-//                text: rect.n
-//            }
-//        },
-//        State{
-//            name: "Highlighted"
-//            PropertyChanges {
-//                target: rect
-//                color: "orange"
-//                border.width: 2
-//                radius: width/10
-//            }
-//            PropertyChanges {
-//                target: num
-//                text: rect.n
-//            }
-//        },
-//        State{
-//            name: "Check"
-//            PropertyChanges {
-//                target: rect
-//                color: "lightgreen"
-//                border.width: 2
-//                radius: width/10
-//            }
-//            PropertyChanges {
-//                target: num
-//                text: rect.n
-//            }
-//        },
-//        State{
-//            name: "Delete"
+    ]
+    MouseArea{
+        anchors.fill: parent;
+        hoverEnabled: true;
 
-//            PropertyChanges {
-//                target: rect
-//                color: "#6b6d6d"
-//                border.width: 0
-//                radius: 0
-//            }
-//            PropertyChanges {
-//                target: num
-//                text: ""
-//            }
-//        }
-//    ]
+        onEntered: !btn.disable ? btn.state = "Pressed" : btn.state = "Disable"
+        onExited: !btn.disable ? btn.state = "Normal" : btn.state = "Disable"
+        onPressed: !btn.disable ? btn.state = "Pressed" : btn.state = "Disable"
+        onClicked: {
+            if(!btn.disable)
+                btn.clicked();
+        }
+    }
 }
