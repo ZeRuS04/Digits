@@ -1,66 +1,77 @@
 import QtQuick 2.0
+import QtQuick 2.0
 
 Rectangle {
     id: btn
     state: disable ? "Disable" : "Normal";
-    border.color: "#845a00";
+//    border.color: "#845a00";
     property string text: "";
     property bool disable: false
-    property color colorText: "black";
+    property color colorText: "#3283ff";
     property color colorText_2: "white";
+    property int duration: 500
+    property string axis: "x"
     property int fntSize: 30
     signal clicked();
-    Text{
-        id: buttonText
-        anchors.fill: parent;
-        text: parent.text;
-        horizontalAlignment: Text.AlignHCenter;
-        verticalAlignment: Text.AlignVCenter;
-        font.pixelSize: parent.fntSize;
-        font.family: "Arial"
-        font.bold: true
-        wrapMode: Text.WordWrap;
+    border.width: 1
+    border.color: "#3283ff"
+
+    Cell{
+        id: cell
+        anchors.fill: parent
+        upSideColor: "white"
+        downSideColor: "white"
+        downSidetextColor: "#3283ff"
+        downSidetext: btn.text
+        inputBordImageVisible: false
+        borderImage: "qrc:/borderShadowBtn.png"
+        axis: "x"
+        onRotated: btn.clicked()
     }
+
 
     states: [
         State{
             name: "Normal"
             PropertyChanges {
                 target: btn;
-                color: "skyblue"
-                border.width: 1;
-                radius: 5;
             }
             PropertyChanges {
-                target: buttonText
-                color: parent.colorText;
+                target: cell
+                downSidetextColor: "#3283ff"
             }
         },
         State{
-                name: "Pressed"
-                PropertyChanges {
-                    target: btn;
-                    color: "lightgreen";
-                    border.width: 1;
-                    radius: 5;
-                }
-                PropertyChanges {
-                    target: buttonText
-                    color: parent.colorText;
-                }
+            name: "Pressed"
+            PropertyChanges {
+                target: btn;
+            }
+            PropertyChanges {
+                target: cell
+                downSidetextColor: "#white"
+            }
         },
         State{
-                name: "Disable"
-                PropertyChanges {
-                    target: btn;
-                    color: "#6b6d6d";
-                    border.width: 0;
-                    radius: 0;
-                }
-                PropertyChanges {
-                    target: buttonText
-                    color: parent.colorText;
-                }
+            name: "Highlighted"
+            PropertyChanges {
+                target: btn;
+            }
+            PropertyChanges {
+                target: cell
+                downSideColor: "#FFD283"
+                downSidetextColor: "#3283ff"
+            }
+        },
+        State{
+            name: "Disable"
+            PropertyChanges {
+                target: btn;
+            }
+            PropertyChanges {
+                target: cell
+                downSideColor: "#4C79BF"
+                downSidetextColor: "#white"
+            }
         }
 
     ]
@@ -72,8 +83,9 @@ Rectangle {
         onExited: !btn.disable ? btn.state = "Normal" : btn.state = "Disable"
         onPressed: !btn.disable ? btn.state = "Pressed" : btn.state = "Disable"
         onClicked: {
-            if(!btn.disable)
-                btn.clicked();
+            if(!btn.disable){
+                cell.rotate();
+            }
         }
     }
 }

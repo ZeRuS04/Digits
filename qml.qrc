@@ -24,5 +24,6 @@
         <file>res/Roboto-Regular.ttf</file>
         <file>borderShadow.png</file>
         <file>borderInShadow.png</file>
+        <file>borderShadowBtn.png</file>
     </qresource>
 </RCC>

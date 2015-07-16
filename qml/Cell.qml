@@ -11,20 +11,36 @@ Rectangle {
     property string downSidetext: ""
     property int duration: 500
     property string axis: "y"
+    property bool isRotating: false
+    property string borderImage: "qrc:/borderShadow.png"
+    property string inputBordImage: "qrc:/borderInShadow.png"
+    property bool inputBordImageVisible: true
     function rotate(){
         upSide.angle += 180
         downSide.angle += 180
+        isRotating = true;
         timer.start()
     }
+
+
+    signal rotated();
+
+    onRotated: isRotating = false;
 
     BorderImage {
 
         anchors.fill: parent
-        source: "qrc:/borderInShadow.png"
+        visible: rect.inputBordImageVisible
+        source: rect.inputBordImage
         border.left: 3; border.top: 3
         border.right: 3; border.bottom: 3
     }
 
+    Timer {
+        id: endTimer
+        interval: rect.duration; running: false; repeat: false
+        onTriggered: rotated();
+    }
     Timer {
         id: timer
         interval: rect.duration/2; running: false; repeat: false
@@ -61,13 +77,14 @@ Rectangle {
         }
         BorderImage {
 
-            source: "qrc:/borderShadow.png"
+            source: rect.borderImage
 
             anchors.centerIn: parent
             width: parent.width+10; height: parent.height+10
             border.left: 3; border.top: 3
             border.right: 3; border.bottom: 3
-
+            horizontalTileMode: BorderImage.Stretch
+            verticalTileMode: BorderImage.Round
             Text{
                 id: buttonText
                 text: downSidetext
