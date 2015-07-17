@@ -241,8 +241,6 @@ Rectangle {
 
 
         }
-        Label{
-        }
         GButton{
             id: checkSolution
             anchors.margins: 7

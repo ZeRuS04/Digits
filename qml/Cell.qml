@@ -5,7 +5,11 @@ Rectangle {
     height: width
     property int n;
     property bool blocked: false
-
+    Behavior on color {
+        ColorAnimation {
+            duration: 300
+        }
+    }
     border.color: "#845a00"
     Text{
         id: num

@@ -8,7 +8,7 @@
 #include "GAnalitics.h"
 
 #define		APP_NAME	"Digits"
-#define		ORG_NAME    QT_TR_NOOP("Eugeniy Sinelshchikov")
+#define		ORG_NAME    "Eugeniy Sinelshchikov"
 #define		ORG_DOMAIN	"zerus04@gmail.com"
 
 #define     G_RELEASE	"0"

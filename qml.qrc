@@ -17,5 +17,6 @@
         <file>qml/GButton.qml</file>
         <file>qml/About.qml</file>
         <file>qml/ScrollBar.qml</file>
+        <file>digits_ru.qm</file>
     </qresource>
 </RCC>
