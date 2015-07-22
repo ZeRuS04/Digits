@@ -1,7 +1,9 @@
 #include <QCoreApplication>
 #include <QApplication>
 #include <QQmlApplicationEngine>
+//#include "qtquick2applicationviewer.h"
 #include <QtQml>
+
 #include "GameLogic.h"
 
 QCoreApplication *coreApp;
@@ -15,7 +17,7 @@ int main(int argc, char *argv[])
     QApplication::setOrganizationName(ORG_NAME);
     QApplication::setOrganizationDomain(ORG_DOMAIN);
     QApplication::setApplicationName(APP_NAME);
-    QApplication::setApplicationVersion(G_VERSION("9"));
+    QApplication::setApplicationVersion(G_VERSION("0"));
     coreApp = &app;
     QQmlApplicationEngine engine;
     qmlRegisterType<GameLogic>("GameLogic", 1, 0, "GameLogic");

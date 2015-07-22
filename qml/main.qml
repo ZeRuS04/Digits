@@ -41,9 +41,34 @@ ApplicationWindow {
         }
     }
 
+    Rectangle{
+        id: bannerField
+        anchors.top: parent.top
+        anchors.left: parent.left
+        anchors.right: parent.right
+        height: parent.height < 400 ? 32 : (parent.height >= 400)&&(parent.height  < 720) ? 50 : 90
+        color: "black"
+        Text{
+            id: buttonText
+            anchors.fill: parent;
+            text: qsTr("Ad unit");
+            horizontalAlignment: Text.AlignHCenter;
+            verticalAlignment: Text.AlignVCenter;
+            font.pixelSize: height/3;
+            font.family: "Arial"
+            font.bold: true
+            color: "white"
+            wrapMode: Text.WordWrap;
+        }
+
+    }
+
     Loader{
         id:mainLoader
-        anchors.fill: parent;
+        anchors.top: bannerField.bottom
+        anchors.left: parent.left
+        anchors.right: parent.right
+        anchors.bottom: parent.bottom;
         onLoaded: {
             logic.openQmlPage(source);
         }

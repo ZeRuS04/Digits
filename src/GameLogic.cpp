@@ -124,6 +124,12 @@ void GameLogic::restart()
     m_analytics->sendAppview(QCoreApplication::applicationName(), QCoreApplication::applicationVersion(), "New Game");
     m_lastAction = NO_ACTION;
     m_nums.clear();
+//    m_nums.append(1);    m_nums.append(1);    m_nums.append(1);    m_nums.append(2);
+//    m_nums.append(1);    m_nums.append(1);    m_nums.append(3);    m_nums.append(0);
+//    m_nums.append(0);
+//    m_nums.append(3);    m_nums.append(1);    m_nums.append(6);
+//    m_nums.append(1);    m_nums.append(7);    m_nums.append(1);    m_nums.append(8);
+//    m_nums.append(1);    m_nums.append(9);
     m_nums.append(1);    m_nums.append(1);    m_nums.append(1);    m_nums.append(2);
     m_nums.append(1);    m_nums.append(3);    m_nums.append(1);    m_nums.append(4);
     m_nums.append(1);    m_nums.append(5);    m_nums.append(1);    m_nums.append(6);

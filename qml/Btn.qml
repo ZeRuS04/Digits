@@ -8,7 +8,7 @@ Rectangle {
     property bool disable: false
     property color colorText: "black";
     property color colorText_2: "white";
-    property int fntSize: 30
+    property int fntSize: width/3
     signal clicked();
     Text{
         id: buttonText

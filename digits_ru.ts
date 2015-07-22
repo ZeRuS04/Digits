@@ -300,5 +300,9 @@ To go to the menu, press  &quot;Menu&quot;.</source>
         <source>Digits</source>
         <translation></translation>
     </message>
+    <message>
+        <source>Ad unit</source>
+        <translation type="unfinished"></translation>
+    </message>
 </context>
 </TS>
