@@ -241,8 +241,6 @@ Rectangle {
 
 
         }
-        Label{
-        }
         GButton{
             id: checkSolution
             anchors.margins: 7
@@ -250,7 +248,9 @@ Rectangle {
             Layout.fillHeight: true
             text: qsTr("?")
             onClicked:{
-                logic.checkSolution();
+                if(checkSolution.state == "Default"){
+                    logic.checkSolution();
+                }
             }
             Connections{
                 target: logic
@@ -282,6 +282,7 @@ Rectangle {
             property bool isActive: true
             onClicked:{
                 if(isActive){
+
                     isActive = false;
                     timer.start();
                     grid.prevRatio = grid.contentY;

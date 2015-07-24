@@ -17,6 +17,7 @@
         <file>qml/GButton.qml</file>
         <file>qml/About.qml</file>
         <file>qml/ScrollBar.qml</file>
+        <file>digits_ru.qm</file>
         <file>headerBorder.png</file>
         <file>qml/MenuHeader.qml</file>
         <file>res/Roboto-Bold.ttf</file>

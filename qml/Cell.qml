@@ -21,8 +21,6 @@ Rectangle {
         isRotating = true;
         timer.start()
     }
-
-
     signal rotated();
 
     onRotated: isRotating = false;

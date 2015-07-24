@@ -9,26 +9,16 @@ Rectangle {
     property var startNums: [1,1,1,2,1,3,1,4,1,5,1,6,1,7,1,8,1,9]
     property var pair: [];
     property int stepNumber: 0
-    property var steps: [[],[1, 10], [8,17], [0, 2], [-1], [-2], [-3]]
+    property var steps: [[],[1, 10], [8,17], [0, 2], [-1], [-4], [-2], [-3]]
     property var text: [
-               "Welcome to DIGITS! \n
-It is an old puzzle game. Rules are pretty simple. \n
-Touch here to continue",
-        "In the classic version, You must cancel all the digits \n
-Only similar digits standing by each other are allowed to be canceled. \n
-Give it a try.",
-        "Also, it is possible to cancel digits with a sum of 10. \n
-Give it a try.",
-        "Besides, if digits are not alongside, but there are no other digits between, You can cancel those as well. \n
-Give it a try.",
-        "When all variants are depleted or You just don't want to cancel,\n
-You can press \"Next step\". All remaining digits will be duplicated.\n
-Give it a try.",
-        "If You have made a mistake, you can undo previous action.\n
-To do it, press \"Undo\".\n
-Give it a try.",
-        "To start a new game, press \"Restart\".\n
-To go to the menu, press  \"Menu\".",
+        qsTr("Welcome to DIGITS! \nIt is an old puzzle game. Rules are pretty simple. \nTouch here to continue"),
+        qsTr("In the classic version, You must cancel all the digits \nOnly similar digits standing by each other are allowed to be canceled. \nGive it a try."),
+        qsTr("Also, it is possible to cancel digits with a sum of 10. \nGive it a try."),
+        qsTr("Besides, if digits are not alongside, but there are no other digits between, You can cancel those as well. \nGive it a try."),
+        qsTr("When all variants are depleted or You just don't want to cancel,\nYou can press \"Next step\". All remaining digits will be duplicated.\nGive it a try."),
+        qsTr("If you want to know about availability of possible cancel, press \"?\". \nBriefly, one possible variant will be highlighted. Give it a try."),
+        qsTr("If You have made a mistake, you can undo previous action.\nTo do it, press \"Undo\".\nGive it a try."),
+        qsTr("To start a new game, press \"Restart\".\nTo go to the menu, press  \"Menu\"."),
         ""
     ]
     property var cells: []
@@ -47,6 +37,8 @@ To go to the menu, press  \"Menu\".",
                     undoBlock.visible = false;
                 if(steps[mainRect.stepNumber][0] === -3)
                     restartBlock.visible = false;
+                if(steps[mainRect.stepNumber][0] === -4)
+                    chsBlock.visible = false;
             }else{
                 for(var i = 0; i < steps[mainRect.stepNumber].length; i++){
                     cells[steps[mainRect.stepNumber][i]].block = false;
@@ -268,6 +260,46 @@ To go to the menu, press  \"Menu\".",
 
                 Rectangle{
                     id: undoBlock
+                    anchors.fill: parent
+                    visible: parent.block
+                    color: Qt.rgba(0,0,0,0.5);
+                    MouseArea{
+                        anchors.fill: parent
+                        hoverEnabled: true
+                        onClicked: {}
+                    }
+                }
+            }
+            GButton{
+                id: checkSolution
+                anchors.margins: 7
+    //            Layout.fillWidth: true
+                Layout.fillHeight: true
+                text: qsTr("?")
+                onClicked:{
+                    checkSolution.state = "Green"
+                    mainRect.cells[12].state = "Highlighted";
+                    mainRect.cells[21].state = "Highlighted";
+                    solTimer.start();
+                }
+                Timer{
+                    id: solTimer
+                    interval: 1000
+                    repeat: false
+                    running: false
+                    onTriggered: {
+                        mainRect.cells[12].state = "Default";
+                        mainRect.cells[21].state = "Default"
+                        checkSolution.state = "Default"
+                        chsBlock.visible = true;
+                        stepNumber++;
+                        nextStep();
+
+
+                    }
+                }
+                Rectangle{
+                    id: chsBlock
                     anchors.fill: parent
                     visible: parent.block
                     color: Qt.rgba(0,0,0,0.5);

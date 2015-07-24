@@ -8,10 +8,10 @@
 #include "GAnalitics.h"
 
 #define		APP_NAME	"Digits"
-#define		ORG_NAME    QT_TR_NOOP("Eugeniy Sinelshchikov")
+#define		ORG_NAME    "Eugeniy Sinelshchikov"
 #define		ORG_DOMAIN	"zerus04@gmail.com"
 
-#define     G_RELEASE	"0"
+#define     G_RELEASE	"1"
 #define     G_VERSION(x) ("v" G_RELEASE "." x)
 
 

@@ -22,7 +22,7 @@ Rectangle {
         Label{
             width: mainRect.width
             height: mainRect.height/10
-            text: qsTr("You result:")
+            text: qsTr("Your result:")
             color: "blue"
             font.bold: true
             font.pixelSize: height/3;

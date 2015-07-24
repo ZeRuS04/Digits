@@ -9,7 +9,7 @@ Rectangle {
     property bool disable: false
     property color colorText: "#3283ff";
     property color colorText_2: "white";
-    property int duration: 500
+    property int fntSize: width/3
     property string axis: "x"
     property int fntSize: 30
     signal clicked();

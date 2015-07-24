@@ -104,7 +104,7 @@ Rectangle {
                         height: butField.cellSize
 
                         text: qsTr("RANDOM");
-                        fntSize: height/3;
+                        fntSize: height/4;
                         disable: true
                         onClicked: {
                         }
@@ -116,7 +116,7 @@ Rectangle {
 //                        anchors.horizontalCenter: parent.horizontalCenter;
                         text: qsTr("IN TIME");
                         disable: true
-                        fntSize: height/3;
+                        fntSize: height/4;
                         MouseArea{
                             anchors.fill: parent;
                             onClicked: {
