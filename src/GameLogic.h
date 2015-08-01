@@ -63,6 +63,8 @@ public:
     Q_PROPERTY(int score READ score WRITE setScore NOTIFY scoreChanged)
     Q_PROPERTY(int steps READ steps WRITE setSteps NOTIFY stepsChanged)
 
+    Q_PROPERTY(QList<int> nums READ nums WRITE setNums NOTIFY numsChanged)
+
     Q_PROPERTY(int numsCount READ numsCount NOTIFY numsChanged)
     Q_PROPERTY(int state READ state WRITE setState NOTIFY stateChanged)
 
@@ -95,6 +97,11 @@ public:
 
     void loadNums();
     void saveNums();
+    QList<int> nums() const
+    {
+        return m_nums;
+    }
+
 signals:
     void timeChanged();
     void numsChanged();
@@ -112,6 +119,15 @@ public slots:
     void setScore(int arg);
     void setState(int arg);
     void nextStepSlot();
+
+    void setNums(QList<int> nums)
+    {
+        if (m_nums == nums)
+            return;
+
+        m_nums = nums;
+        emit numsChanged();
+    }
 
 private:
     void initialize();

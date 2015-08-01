@@ -40,3 +40,5 @@ SOURCES = qml/*.qml
 }
 
 TRANSLATIONS += digits_ru.ts
+
+DISTFILES +=

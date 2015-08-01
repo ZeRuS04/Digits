@@ -11,7 +11,7 @@ Rectangle {
     property color colorText_2: "white";
     property int fntSize: width/3
     property string axis: "x"
-    property int fntSize: 30
+//    property int fntSize: 30
     signal clicked();
     border.width: 1
     border.color: "#3283ff"
@@ -24,9 +24,13 @@ Rectangle {
         downSidetextColor: "#3283ff"
         downSidetext: btn.text
         inputBordImageVisible: false
+        haveBorder: true
         borderImage: "qrc:/borderShadowBtn.png"
         axis: "x"
-        onRotated: btn.clicked()
+        onRotated:{
+            btn.clicked()
+            rotate(false);
+        }
     }
 
 
@@ -42,7 +46,7 @@ Rectangle {
             }
         },
         State{
-            name: "Pressed"
+            name: "Selected"
             PropertyChanges {
                 target: btn;
             }
@@ -79,12 +83,13 @@ Rectangle {
         anchors.fill: parent;
         hoverEnabled: true;
 
-        onEntered: !btn.disable ? btn.state = "Pressed" : btn.state = "Disable"
+        onEntered: !btn.disable ? btn.state = "Selected" : btn.state = "Disable"
         onExited: !btn.disable ? btn.state = "Normal" : btn.state = "Disable"
-        onPressed: !btn.disable ? btn.state = "Pressed" : btn.state = "Disable"
+        onPressed: (!btn.disable) ? cell.pressed = true : cell.pressed = false
+        onReleased: cell.pressed = false
         onClicked: {
             if(!btn.disable){
-                cell.rotate();
+                cell.rotate(true);
             }
         }
     }

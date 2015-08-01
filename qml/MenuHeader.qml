@@ -4,14 +4,11 @@ import QtQuick.Controls 1.2
 Rectangle{
     id: mainRect
     color: "#3283ff"
-    FontLoader {
-        id: robotoRegular
-        source: "qrc:/res/Roboto-Regular.ttf"
+
+    function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
     }
-    FontLoader {
-        id: robotoItalic
-        source: "qrc:/res/Roboto-LightItalic.ttf"
-    }
+
 
     BorderImage {
         id: header
@@ -65,35 +62,91 @@ Rectangle{
         anchors.margins: mainRect.width/7
         columns: 2
         rows: 2
-        spacing: 5
+        spacing: 7
+        Timer{
+            id: headerTimer1
+            interval: 4000; running: true; repeat: true
+            onTriggered: {
+                cell_1.rotate(false);
+                if(cell_1.state == "UpSide")
+                    cell_1.downSidetext = mainRect.getRandomInt(1,9);
+            }
+        }
+        Timer{
+            id: headerTimer2
+            interval: 4500; running: false; repeat: true
+            onTriggered: {
+                cell_2.rotate(false);
+                if(cell_2.state == "UpSide")
+                    cell_2.downSidetext = mainRect.getRandomInt(1,9);
+            }
+        }
+        Timer{
+            id: headerTimer3
+            interval: 4000; running: false; repeat: true
+            onTriggered: {
+                cell_3.rotate(false);
+                if(cell_3.state == "UpSide")
+                    cell_3.downSidetext = mainRect.getRandomInt(1,9);
+            }
+        }
+        Timer{
+            id: headerTimer4
+            interval: 4500; running: true; repeat: true
+            onTriggered: {
+                cell_4.rotate(false);
+                if(cell_4.state == "UpSide")
+                    cell_4.downSidetext = mainRect.getRandomInt(1,9);
+            }
+        }
+        Timer{
+            interval: 1000; running: true; repeat: false
+            onTriggered: {
+                headerTimer2.start()
+                headerTimer3.start()
+            }
+        }
         Cell{
+            id: cell_1
             upSideColor: "#3283ff"
             downSideColor: "white"
             downSidetextColor: "#3283ff"
             downSidetext: "1"
             width: mainRect.height/3; height: mainRect.height/3;
+//            state: "UpSide"
         }
+
+
         Cell{
+            id: cell_2
             upSideColor: "#3283ff"
             downSideColor: "white"
             downSidetextColor: "#3283ff"
             downSidetext: "5"
             width: mainRect.height/3; height: mainRect.height/3;
+//            state: "UpSide"
         }
         Cell{
+            id: cell_3
             upSideColor: "#3283ff"
             downSideColor: "white"
             downSidetextColor: "#3283ff"
             downSidetext: "5"
             width: mainRect.height/3; height: mainRect.height/3;
+//            state: "UpSide"
         }
         Cell{
+            id: cell_4
             upSideColor: "#3283ff"
             downSideColor: "white"
             downSidetextColor: "#3283ff"
             downSidetext: "9"
             width: mainRect.height/3; height: mainRect.height/3;
+//            state: "UpSide"
         }
     }
-
+    Component.onCompleted: {
+        cell_1.rotate(false);
+        cell_4.rotate(false);
+    }
 }

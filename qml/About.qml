@@ -2,8 +2,15 @@ import QtQuick 2.0
 
 Rectangle {
     id:about
-    color: "#fdf9f0";
-
+    color: "white";
+    FontLoader {
+        id: robotoRegular
+        source: "qrc:/res/Roboto-Regular.ttf"
+    }
+    FontLoader {
+        id: robotoItalic
+        source: "qrc:/res/Roboto-LightItalic.ttf"
+    }
     Column{
         id: optColumn
         spacing: 50
@@ -15,8 +22,8 @@ Rectangle {
             width: parent.width
             horizontalAlignment: Text.AlignHCenter;
             font.pixelSize: 30;
-            font.family: "Arial"
-            font.bold: true
+            font.family: robotoRegular.name
+//            font.bold: true
             wrapMode: Text.WordWrap;
         }
         Text{
@@ -25,7 +32,7 @@ Rectangle {
             width: parent.width
             horizontalAlignment: Text.AlignHCenter;
             font.pixelSize: 18;
-            font.family: "Arial"
+            font.family: robotoItalic.name
             font.bold: true
             wrapMode: Text.WordWrap;
         }
@@ -35,7 +42,7 @@ Rectangle {
             width: parent.width
 //            horizontalAlignment: Text.AlignHCenter;
             font.pixelSize: 18;
-            font.family: "Arial"
+            font.family: robotoItalic.name
             font.bold: true
             wrapMode: Text.WordWrap;
         }
@@ -45,7 +52,7 @@ Rectangle {
             width: parent.width
 //            horizontalAlignment: Text.AlignHCenter;
             font.pixelSize: 18;
-            font.family: "Arial"
+            font.family: robotoItalic.name
             font.bold: true
             wrapMode: Text.WordWrap;
         }
@@ -55,19 +62,19 @@ Rectangle {
             width: parent.width
             horizontalAlignment: Text.AlignHCenter;
             font.pixelSize: 18;
-            font.family: "Arial"
+            font.family: robotoItalic.name
             font.bold: true
             wrapMode: Text.WordWrap;
         }
         Btn{
             id: back
             width: parent.width;
-            height: parent.height/6
+            height: parent.height/8
             anchors.horizontalCenter: parent.horizontalCenter;
             text: qsTr("BACK");
             fntSize: height/3;
             onClicked: {
-                mainLoader.source = "MainMenu.qml"
+                mainFlickable.contentX+=about.width
             }
         }
     }
@@ -76,7 +83,7 @@ Rectangle {
     Keys.onReleased: {
         if (event.key === Qt.Key_Back) {
 
-            mainLoader.source = "MainMenu.qml"
+//            mainLoader.source = "MainMenu.qml"
             event.accepted = true
         }
     }

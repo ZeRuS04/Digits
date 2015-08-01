@@ -6,10 +6,6 @@
         <file>qml/Option.qml</file>
         <file>qml/Btn.qml</file>
         <file>qml/Cell.qml</file>
-        <file>res/logo_D.png</file>
-        <file>res/logo_G.png</file>
-        <file>res/logo_S.png</file>
-        <file>res/logo_T.png</file>
         <file>qml/End.qml</file>
         <file>qml/GameModesMenu.qml</file>
         <file>qml/ClearField.qml</file>
@@ -26,5 +22,24 @@
         <file>borderShadow.png</file>
         <file>borderInShadow.png</file>
         <file>borderShadowBtn.png</file>
+        <file>qml/WelcomeMenu.qml</file>
+        <file>qml/ImgButton.qml</file>
+        <file>res/ic_exit_to_app_white_48dp.png</file>
+        <file>res/ic_exit_to_app_white_48dp_shd.png</file>
+        <file>res/ic_help_white_48dp.png</file>
+        <file>res/ic_help_white_48dp_shd.png</file>
+        <file>res/ic_menu_white_24dp.png</file>
+        <file>res/ic_menu_white_24dp_shd.png</file>
+        <file>res/ic_redo_white_24dp.png</file>
+        <file>res/ic_redo_white_24dp_shd.png</file>
+        <file>res/ic_refresh_white_24dp.png</file>
+        <file>res/ic_refresh_white_24dp_shd.png</file>
+        <file>res/ic_replay_white_48dp.png</file>
+        <file>res/ic_replay_white_48dp_shd.png</file>
+        <file>res/ic_undo_white_24dp.png</file>
+        <file>res/ic_undo_white_24dp_shd.png</file>
+        <file>res/ic_wb_incandescent_white_24dp.png</file>
+        <file>res/ic_wb_incandescent_white_24dp_shd.png</file>
+        <file>res/line_shadow.png</file>
     </qresource>
 </RCC>

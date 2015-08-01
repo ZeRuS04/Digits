@@ -8,6 +8,15 @@ ApplicationWindow {
     height: 800;
     title: qsTr("Digits");
 
+    FontLoader {
+        id: robotoRegular
+        source: "qrc:/res/Roboto-Regular.ttf"
+    }
+    FontLoader {
+        id: robotoItalic
+        source: "qrc:/res/Roboto-LightItalic.ttf"
+    }
+
 
     GameLogic{
         id: logic
@@ -41,31 +50,31 @@ ApplicationWindow {
         }
     }
 
-    Rectangle{
-        id: bannerField
-        anchors.top: parent.top
-        anchors.left: parent.left
-        anchors.right: parent.right
-        height: parent.height < 400 ? 32 : (parent.height >= 400)&&(parent.height  < 720) ? 50 : 90
-        color: "black"
-        Text{
-            id: buttonText
-            anchors.fill: parent;
-            text: qsTr("Ad unit");
-            horizontalAlignment: Text.AlignHCenter;
-            verticalAlignment: Text.AlignVCenter;
-            font.pixelSize: height/3;
-            font.family: "Arial"
-            font.bold: true
-            color: "white"
-            wrapMode: Text.WordWrap;
-        }
-
-    }
+//    Rectangle{
+//        id: bannerField
+//        anchors.top: parent.top
+//        anchors.left: parent.left
+//        anchors.right: parent.right
+//        height: parent.height < 400 ? 32 : (parent.height >= 400)&&(parent.height  < 720) ? 50 : 90
+//        color: "black"
+//        Text{
+//            id: buttonText
+//            anchors.fill: parent;
+//            text: qsTr("Ad unit");
+//            horizontalAlignment: Text.AlignHCenter;
+//            verticalAlignment: Text.AlignVCenter;
+//            font.pixelSize: height/3;
+//            font.family: "Arial"
+//            font.bold: true
+//            color: "white"
+//            wrapMode: Text.WordWrap;
+//        }
+//    }
 
     Loader{
         id:mainLoader
-        anchors.top: bannerField.bottom
+        anchors.top: parent.top
+//        anchors.top: bannerField.bottom
         anchors.left: parent.left
         anchors.right: parent.right
         anchors.bottom: parent.bottom;

@@ -7,90 +7,53 @@ Rectangle {
     id:menuField
     color: "white";
 
-    property bool isPortrait: Screen.primaryOrientation === Qt.PortraitOrientation
-    property int contentWidth: width > height ?  menuField.width/3 :  menuField.width/3*2;
-    property int contentHeight: height/9
-    MenuHeader{
-        id: menuHeader
-        anchors.top: parent.top; anchors.left: parent.left; anchors.right: parent.right
-        height: parent.height/5
+    Flickable{
+        id: mainFlickable
+        interactive: false
+        anchors.left: parent.left; anchors.right: parent.right;
+        anchors.bottom: parent.bottom;
+        height: menuField.height/5*4;
+        contentHeight: field.height; contentWidth: field.width;
+        contentX: menuField.width
+        Behavior on contentX {
+            NumberAnimation { duration: 300 }
+        }
+        Rectangle{
+            id: field
+            width: menuField.width*3
+            height: mainFlickable.height
+            anchors.bottom: parent.bottom
+
+            //======== About ===========
+            About{
+                id: about
+                anchors.left: parent.left;   anchors.top: parent.top
+                width: menuField.width; height: parent.height
+            }
+            //==========================
+
+
+            //===== WelcomeMenu ========
+            WelcomeMenu{
+                id: welcomeMenu
+                anchors.left: about.right;   anchors.top: parent.top
+                width: menuField.width; height: parent.height
+            }
+            //==========================
+
+            //===== GamesModeMenu ======
+            GameModesMenu{
+                anchors.left: welcomeMenu.right;   anchors.top: parent.top
+                width: menuField.width; height: parent.height
+            }
+            //==========================
+        }
     }
-
-    Flow{
-        id: column
-        spacing: parent.contentHeight/2
-
-        anchors.top: menuHeader.bottom
-        anchors.bottom: parent.bottom
-
-        width: parent.width/4*3
-        anchors.topMargin: parent.contentHeight
-        anchors.horizontalCenter: parent.horizontalCenter;
-
-        Btn{
-            id: continueGame
-            width: menuField.contentWidth;
-            height: menuField.contentHeight
-//            anchors.horizontalCenter: parent.horizontalCenter;
-            text: qsTr("CONTINUE");
-            fntSize: height/3;
-            disable: !logic.haveSaves()
-            onClicked: {
-                mainLoader.source = "Game.qml"
-            }
-
+        MenuHeader{
+            id: menuHeader
+            anchors.top: parent.top; anchors.left: parent.left; anchors.right: parent.right
+            height: parent.height/5
         }
-        Btn{
-            id: start
-            width: menuField.contentWidth;
-            height: menuField.contentHeight
-//            anchors.horizontalCenter: parent.horizontalCenter;
-            text: qsTr("NEW GAME");
-            fntSize: height/3;
-            onClicked: {
-                mainLoader.source = "GameModesMenu.qml"
-            }
-        }
-//                Btn{
-//                    id: option
-//                    width: menuField.contentWidth;
-//                    height: menuField.contentHeight
-//                    anchors.horizontalCenter: parent.horizontalCenter;
-//                    text: qsTr("OPTIONS");
-//                    fntSize: height/3;
-//                    onClicked: {
-//                        mainLoader.source = "Option.qml"
-//                    }
-//                }
-        Btn{
-            id: about
-            width: menuField.contentWidth;
-            height: menuField.contentHeight
-//            anchors.horizontalCenter: parent.horizontalCenter;
-            text: qsTr("ABOUT");
-            fntSize: height/3;
-            onClicked: {
-                mainLoader.source = "About.qml"
-            }
-        }
-        Btn{
-            id: exit
-            width: menuField.contentWidth;
-            height: menuField.contentHeight
-//            anchors.horizontalCenter: parent.horizontalCenter;
-            text: qsTr("EXIT");
-            fntSize: height/3;
-            MouseArea{
-                anchors.fill: parent;
-                onClicked: Qt.quit();
-            }
-        }
-
-    }
-
-
-
-
 
 //        Rectangle{
 //            id: butField
@@ -101,8 +64,6 @@ Rectangle {
 
 //
 //            color: Qt.rgba(0,0,0,0);
-
-
 //        }
 
 

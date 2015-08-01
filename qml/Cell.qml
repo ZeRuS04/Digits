@@ -9,17 +9,32 @@ Rectangle {
     property string downSideColor: "white"
     property string downSidetextColor: "black"
     property string downSidetext: ""
+
+    property string checkColor: "orange"
+    property string checktextColor: "black"
     property int duration: 500
     property string axis: "y"
     property bool isRotating: false
+    property bool haveBorder: false
+    property bool pressed: false
     property string borderImage: "qrc:/borderShadow.png"
     property string inputBordImage: "qrc:/borderInShadow.png"
     property bool inputBordImageVisible: true
-    function rotate(){
+    function selectCell(){
+        downSide.color = checkColor;
+        buttonText.color = checktextColor;
+    }
+    function unselectCell(){
+        downSide.color = downSideColor;
+        buttonText.color = downSidetextColor;
+    }
+    function rotate(signaled){
         upSide.angle += 180
         downSide.angle += 180
         isRotating = true;
-        timer.start()
+        timer.start();
+        if(signaled === true)
+            endTimer.start();
     }
     signal rotated();
 
@@ -59,6 +74,8 @@ Rectangle {
         color: rect.downSideColor
         anchors.centerIn: parent
         width: parent.width; height: parent.height
+        border.color: "lightgray"
+        border.width: 1
         property int angle: 0
         transform: Rotation {
             origin.x: downSide.width / 2
@@ -74,25 +91,26 @@ Rectangle {
             }
         }
         BorderImage {
-
+            id: bordImg
             source: rect.borderImage
-
+            visible: rect.pressed ? false : true
             anchors.centerIn: parent
             width: parent.width+10; height: parent.height+10
             border.left: 3; border.top: 3
             border.right: 3; border.bottom: 3
             horizontalTileMode: BorderImage.Stretch
             verticalTileMode: BorderImage.Round
-            Text{
-                id: buttonText
-                text: downSidetext
-                anchors.fill: parent
-                color: rect.downSidetextColor
-                horizontalAlignment: Text.AlignHCenter;
-                verticalAlignment: Text.AlignVCenter;
-                font.pixelSize: rect.height/2;
-                font.family: robotoItalic.name;
-            }
+
+        }
+        Text{
+            id: buttonText
+            text: downSidetext
+            anchors.fill: parent
+            color: rect.downSidetextColor
+            horizontalAlignment: Text.AlignHCenter;
+            verticalAlignment: Text.AlignVCenter;
+            font.pixelSize: rect.height/2;
+            font.family: robotoItalic.name;
         }
     }
     Rectangle{
@@ -100,6 +118,8 @@ Rectangle {
         anchors.centerIn: parent
         width: parent.width; height: parent.height
         color: rect.upSideColor
+        border.width: rect.haveBorder ? 1 : 0
+        border.color: "lightgray"
         smooth: true
         property int angle: 180
         transform: Rotation {
@@ -117,18 +137,6 @@ Rectangle {
         }
 
     }
-
-
-    MouseArea{
-        id: ma
-        anchors.fill: parent
-        hoverEnabled: true
-        onClicked: {
-            rect.rotate();
-        }
-    }
-
-
 
     state:"DownSide"
     states: [

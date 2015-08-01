@@ -3,5 +3,5 @@ import QtQuick.Layouts 1.1
 
 Rectangle {
     id:clearField
-    color: "#fdf9f0";
+    color: "white";
 }
